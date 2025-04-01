@@ -24,3 +24,31 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+h2 { @apply text-lg font-semibold text-[#1976D2] mb-4}
+
+/* botones de mi aplicacion */
+.btn-orange { @apply cursor-pointer bg-[#FF9800] text-white shadow-xl hover:bg-orange-600 active:scale-90 rounded }
+.btn-text-green { @apply cursor-pointer px-4 py-1 bg-[#5fbd20] hover:bg-green-700 text-white shadow-xl rounded active:scale-90}
+.btn-text-orange { @apply cursor-pointer px-3 py-2 bg-[#FF9800] text-white shadow-xl hover:bg-orange-600 active:scale-90 rounded text-lg}
+.btn-icon-orange { @apply cursor-pointer p-3 bg-[#FF9800] text-white shadow-xl hover:bg-orange-600 active:scale-90 rounded}
+.btn-text-red { @apply cursor-pointer px-4 py-1 bg-red-600 hover:bg-red-800 text-white shadow-xl rounded active:scale-90}
+
+/* estos son estilos para las tablas de mi app */
+.table { @apply w-full rounded-lg text-sm }
+.table thead tr { @apply bg-[#1976D2] text-white }
+.table thead tr th { @apply p-2 shadow-lg }
+.table tbody tr { @apply border-b hover:bg-[#fff3da] }
+.table tbody tr td { @apply pl-4 leading-tight;}
+
+/* Estilos Paginacion Tablas */
+.container-pagination { @apply mt-4 flex justify-between }
+.container-pagination button { @apply cursor-pointer px-4 py-2 bg-[#0D47A1] hover:bg-blue-950 text-white rounded disabled:opacity-50 active:scale-90}
+
+/* Estilos busquedas en Tablas */
+.container-search { @apply mb-4 flex items-center space-x-2 justify-center}
+.container-search input { @apply border border-gray-300 rounded p-2 flex-1 }
+.container-search select { @apply border border-gray-300 rounded p-2 }
+.container-search button { @apply mr-3 }
+
+/* Fin de estilos para tablas */
