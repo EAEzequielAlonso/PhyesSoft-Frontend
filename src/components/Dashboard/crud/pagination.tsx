@@ -5,15 +5,16 @@ import { useRouter, useSearchParams } from "next/navigation";
 interface Props {
   page: number;
   totalPages: number;
+  endpoint:string
 }
 
-const Pagination: React.FC<Props> = ({ page, totalPages }) => {
+export const Pagination: React.FC<Props> = ({ page, totalPages, endpoint }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const search = searchParams.get("search") || "";
 
   const handlePageChange = (newPage: number) => {
-    router.push(`/dashboard/products/brand?search=${encodeURIComponent(search)}&page=${newPage}`);
+    router.push(`/dashboard/products/${endpoint}?search=${encodeURIComponent(search)}&page=${newPage}`);
   };
 
   return (
@@ -34,5 +35,3 @@ const Pagination: React.FC<Props> = ({ page, totalPages }) => {
     </div>
   );
 };
-
-export default Pagination;

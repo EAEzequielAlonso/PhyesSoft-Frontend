@@ -2,17 +2,20 @@
 
 import { LuTrash } from "react-icons/lu";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/context/ToastContext";
 
 interface Props {
-    brandId: string;
-    endpoint: string
+    id: string;
+    endpoint: string;
+    label: string
 }
 
-export default function ButtonDelete ({brandId, endpoint}: Props) {
+export function ButtonDelete ({id, endpoint, label}: Props) {
     const router = useRouter()
+    const { showToast } = useToast();
     const handleOnClick = async () => {
       try {
-        const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${endpoint}/${brandId}`,{
+        const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${endpoint}/${id}`,{
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -20,13 +23,13 @@ export default function ButtonDelete ({brandId, endpoint}: Props) {
               credentials: "include",
             });
             if (!result.ok) {
-                throw new Error("Error al eliminar el registro");
+                throw new Error();
               }
-        
+            showToast(`${label} eliminada con éxito`, "success");
             router.refresh(); // Actualiza la lista después de eliminar
         
         } catch {
-            console.error("No se pudo eliminar el registro");
+          showToast(`Error al eliminar ${label}`, "error");
         }
     } 
     return (

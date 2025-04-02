@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { UserPlus, Package, BarChart, ShoppingCart, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-export default function DemoSection() {
+export function DemoSection() {
   const steps = [
     {
       icon: <UserPlus className="w-12 h-12 text-[#0D47A1]" />,

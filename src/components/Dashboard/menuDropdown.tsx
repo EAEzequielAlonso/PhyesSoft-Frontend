@@ -1,7 +1,9 @@
+"use client"
+
 import { usePathname } from "next/navigation";
 import { memo } from "react";
 import { FiChevronDown } from "react-icons/fi";
-import MenuItem from "./menuItem";
+import {MenuItem} from "@/components";
 
 interface MenuDropdownItem {
   icon: React.ReactElement;
@@ -18,7 +20,7 @@ interface MenuDropdownProps {
   items: MenuDropdownItem[];
 }
 
-const MenuDropdown: React.FC<MenuDropdownProps> = memo(({ title, icon, isOpen, isExpanded, toggle, items }) => {
+export const MenuDropdown: React.FC<MenuDropdownProps> = memo(({ title, icon, isOpen, isExpanded, toggle, items }) => {
   const pathname = usePathname();
   // Se considera activo si alguna ruta de los items coincide (o es base de la ruta actual)
   const isActive = items.some((item) => pathname.startsWith(item.href));
@@ -65,5 +67,3 @@ const MenuDropdown: React.FC<MenuDropdownProps> = memo(({ title, icon, isOpen, i
 });
 
 MenuDropdown.displayName = "MenuDropdown";
-
-export default MenuDropdown;

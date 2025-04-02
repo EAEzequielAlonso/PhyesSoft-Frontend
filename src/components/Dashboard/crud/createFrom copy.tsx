@@ -2,42 +2,49 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/context/ToastContext";
+import { FormCrud } from "@/types";
 
 
-interface Props {
+interface Props<T> {
     endpoint: string;
     label: string;
     varios?: boolean;
+    item?: T;
+    formCrud: FormCrud<T>[];
 }
 
-export default function CreateForm ({endpoint, label, varios = false}: Props) {
+export function CreateForm<T extends {id:string}> ({endpoint, label, varios = false, item}: Props<T>) {
     const route = useRouter()
-    console.log("varios: ", varios)
+    const { showToast } = useToast();
     const handleAction = async (formData: FormData) => {
-        
         try {
-              const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${endpoint}`, {
-                method: "POST",
+              const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${endpoint}${item ? `/${item.id}` : ""}`, {
+                method: item ? "PUT" : "POST",
                 headers: {
                   "Content-Type": "application/json",
                 },
                 credentials: "include",
-                body: JSON.stringify({ name: formData.get("name") }),
+                //body: JSON.stringify({ name: formData.get("name") }), ACA NECESITO MANDAR TODOS LOS DATOS DEL FORMULARIO SEGUN SU KEY CORRESPONDIENTE
               });
-              if (!response.ok) route.push("/dashboard/products/brand/new?messageError='Error al intentar guardar'")
-              if (!varios) route.push("/dashboard/products/brand") 
+              if (!response.ok) throw new Error();
+              showToast(`${label} ${item ? "actualizada" : "creada"} con éxito`, "success");
+              if (!varios) route.push(`/dashboard/products/${endpoint}`) 
+              
         } catch (error) {
-          console.error("Error al intentar crear una Marca:", error);
+          showToast(`Error al ${item ? "actualizar" : "crear"} ${label}`, "error");
         }
       };
+
+
         
         return (
             <form action={handleAction}>
-              <div className="mb-4">
+              <div className="mb-4"> 
                 <label className="block mb-1">Nombre</label>
                 <input
                   name="name"
-                  defaultValue= ""
+                  defaultValue="" //en estos inputs deberia ir un map con los datos de entrada. si id existe se le asigna el dato por defecto.
                   type="text"
                   required
                   className="w-full border border-gray-300 rounded p-2"
@@ -48,7 +55,7 @@ export default function CreateForm ({endpoint, label, varios = false}: Props) {
                   type="submit"
                   className="btn-text-green"
                 >
-                  Crear
+                  {item ? "Actualizar" : "Crear"}
                 </button>
                 <Link href="/dashboard/products/brand">
                 <button

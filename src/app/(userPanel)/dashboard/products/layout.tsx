@@ -1,4 +1,4 @@
-import SubNavbar from "@/components/Dashboard/subNavbar";
+import {SubNavbar} from "@/components";
 const section = "Productos"
 const navItems = [
     { name: "Productos", path: "/dashboard/products/product" },

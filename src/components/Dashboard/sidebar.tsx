@@ -13,9 +13,9 @@ import {
 } from "react-icons/lu";
 import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
-import MenuItem from "./menuItem";
+import {MenuItem} from "@/components";
 
-const Sidebar: React.FC = () => {
+export const Sidebar: React.FC = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(true);
   // const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
@@ -131,5 +131,3 @@ const Sidebar: React.FC = () => {
     </>
   );
 };
-
-export default Sidebar;

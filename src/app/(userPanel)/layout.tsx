@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import "../globals.css";
-import Sidebar from "@/components/Dashboard/sidebar";
+import {Sidebar} from "@/components";
 import { montserrat } from "../font/fonts";
+import { ToastProvider } from "@/context/ToastContext";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,7 +20,11 @@ export default function RootLayout({
         className={`${montserrat.className} antialiased flex`}
       >
         <Sidebar/>
-        <main className= "p-2 w-full">{children}</main>
+        <main className= "p-2 w-full">
+          <ToastProvider>
+            {children}
+          </ToastProvider>
+        </main>
       </body>
     </html>
   );

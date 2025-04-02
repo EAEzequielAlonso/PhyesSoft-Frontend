@@ -4,7 +4,7 @@ import { LuSearch } from "react-icons/lu";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useState, useEffect } from "react";
 
-export default function Filter() {
+export function Filter({endpoint}:{endpoint:string}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [search, setSearch] = useState(searchParams.get("search") || "");
@@ -17,7 +17,7 @@ export default function Filter() {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Actualizamos la URL sin recargar el layout
-    router.push(`/dashboard/products/brand?search=${encodeURIComponent(search)}`);
+    router.push(`/dashboard/products/${endpoint}?search=${encodeURIComponent(search)}`);
   };
 
   return (

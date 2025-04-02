@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { BarChart, ShoppingCart, DollarSign, Smartphone, Zap, ShieldCheck } from 'lucide-react';
 
-export default function BenefitsSection() {
+export function BenefitsSection() {
   const benefits = [
     {
       icon: <BarChart className="w-12 h-12 text-[#FF9800]" />,

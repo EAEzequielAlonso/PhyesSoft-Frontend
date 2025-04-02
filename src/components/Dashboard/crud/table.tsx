@@ -1,17 +1,17 @@
-import { Brand } from "@/types"
-import { LuPencil, LuTrash } from "react-icons/lu";
-import ButtonDelete from "./buttonDelete"
+
+import { LuPencil } from "react-icons/lu";
+import {ButtonDelete} from "@/components"
 import Link from "next/link";
+import { Columns } from "@/types";
 
-const columns = [
-    {key:"name", label:"Nombre"}
-]
-
-interface Props  {
-    data: Brand[]
+interface Props<T>  {
+    data: T[],
+    endpoint:string,
+    label:string
+    columns: Columns<T>[]
 }
   
-export default async function Table ({data}: Props) {
+export function Table<T extends {id:string}> ({data, endpoint, label, columns}: Props<T>) {
 
   const isValidArray = Array.isArray(data) && data.length > 0;
 
@@ -20,7 +20,7 @@ export default async function Table ({data}: Props) {
             <thead>
               <tr>
                 {columns.map((column) => 
-                    <th key={column.key}>{column.label}</th>
+                    <th key={column.key.toString()}>{column.label}</th>
                 )}
                 <th>Acciones</th>
                 {/* <th
@@ -38,12 +38,17 @@ export default async function Table ({data}: Props) {
                 <tr
                   key={dat.id}
                 >
-                  <td>{dat.name}</td>
+                  {columns.map((col) => (
+                    <td key={dat.id+col.key.toString()}>
+                      {dat[col.key as keyof T] as React.ReactNode}
+                    </td>
+                  ))}
+
                   <td className="text-center">
-                  <Link href={`/dashboard/brand/${dat.id}`}>
+                  <Link href={`/dashboard/products/${endpoint}/${dat.id}`}>
                      <button className="btn-text-green mx-2 my-1"><LuPencil /></button>
                   </Link>  
-                  <ButtonDelete brandId={dat.id} endpoint="brand" />
+                  <ButtonDelete id={dat.id} endpoint={endpoint} label={label} />
                   </td>
                 </tr>
               ))}
@@ -51,7 +56,7 @@ export default async function Table ({data}: Props) {
           </table> )
         : (
         <div className="flex justify-center h-36 items-center">
-             <h1 className="text-4xl text-gray-300 font-bold">No se pueden mostrar las Marcas</h1>
+             <h1 className="text-4xl text-gray-300 font-bold">No se pueden mostrar los datos</h1>
         </div>)
   }
   

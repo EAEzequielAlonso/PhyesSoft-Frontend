@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import {LuCirclePlus, LuListPlus} from "react-icons/lu"
 import Link from "next/link";
 
@@ -15,11 +14,11 @@ export default function BrandsCrudLayout({
             <Link href="/dashboard/products/brand/new">
               <button className="btn-icon-orange mr-3"><LuCirclePlus/></button>
             </Link>
-            <Link href="/dashboard/products/brand/new">
+            <Link href="/dashboard/products/brand/new?listbrand=true">
                <button className="btn-icon-orange"> <LuListPlus/> </button>
             </Link>
           </div>
-          <h2 className="my-auto">Gestión de Marcas</h2>
+          <h2>Gestión de Marcas</h2>
         </div>
         {children}
     </div>

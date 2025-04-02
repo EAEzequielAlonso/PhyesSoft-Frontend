@@ -25,7 +25,7 @@ const testimonials = [
   // Agrega más testimonios según sea necesario
 ];
 
-export default function TestimonialsSection() {
+export function TestimonialsSection() {
   return (
     <section id= "testimonials" className="bg-white py-16">
       <div className="max-w-7xl mx-auto px-4 text-center">

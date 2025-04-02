@@ -9,7 +9,7 @@ interface MenuItemProps {
     active: boolean;
   }
   
-  const MenuItem: React.FC<MenuItemProps> = memo(({ href, icon, text, isOpen, active }) => {
+  export const MenuItem: React.FC<MenuItemProps> = memo(({ href, icon, text, isOpen, active }) => {
     return (
       <Link
         href={href}
@@ -25,4 +25,3 @@ interface MenuItemProps {
 
   MenuItem.displayName = "MenuDropdown";
 
-  export default MenuItem;

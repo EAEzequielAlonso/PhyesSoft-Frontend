@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"; // Asegúrate de importar el componente de Button
 import { motion } from "framer-motion"; // Importamos framer-motion
 
-export default function PriceSection() {
+export function PriceSection() {
   return (
     <section id="price" className="bg-[#4705ff] py-16">
       <div className="max-w-7xl mx-auto px-4 text-center">

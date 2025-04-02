@@ -1,5 +1,5 @@
 // components/Footer.tsx
-const Footer = () => {
+export const Footer = () => {
     return (
       <footer className="bg-gray-800 text-white py-8">
         <div className="max-w-7xl mx-auto px-4 text-center">
@@ -17,6 +17,3 @@ const Footer = () => {
       </footer>
     );
   };
-  
-  export default Footer;
-  

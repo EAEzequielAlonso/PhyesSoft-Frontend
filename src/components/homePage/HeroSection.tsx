@@ -5,9 +5,9 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function HeroSection() {
+export function HeroSection() {
   return (
-    <section className="bg-gradient-to-br from-[#0D47A1] to-[#1976D2] text-white py-9 md:py-24">
+    <section className="bg-gradient-to-br from-[#0D47A1] to-[#1976D2] text-white py-6 md:py-2">
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col-reverse md:flex-row items-center">
         {/* Contenido de texto */}
         <motion.div 
@@ -16,7 +16,7 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="text-4xl md:text-5xl font-bold font-montserrat">
+          <h1 className="text-3xl md:text-5xl font-bold font-montserrat">
             Impulsa tu Tienda de Ropa con la Mejor Plataforma de Gestión
           </h1>
           <p className="mt-4 text-xl font-roboto text-gray-200">
@@ -65,9 +65,9 @@ export default function HeroSection() {
           <Image
             src="https://rightpeoplegroup.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fduonnzqzi%2Fimage%2Fupload%2Fv1713536160%2Ferp_dcca31fc99.png&w=3840&q=75"
             alt="Demostración de la plataforma"
-            width={800}
-            height={600}
-            className="drop-shadow-xl pl-4"
+            width={480}
+            height={480}
+            className="drop-shadow-xl pl-4 py-5"
           />
         </motion.div>
       </div>

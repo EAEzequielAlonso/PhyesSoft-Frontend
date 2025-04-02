@@ -1,11 +1,12 @@
 import { redirect } from "next/navigation";
-import Pagination from "./pagination";
-import Table from "./table";
+import {Pagination, Table} from "@/components";
 import { cookies } from "next/headers";
 import { Brand } from "@/types";
 import { Suspense } from "react";
+import { Columns } from "@/types";
 
 const fetchData = async (endpoint: string, label: string, search: string) => {
+
   try {
     const token = (await cookies()).get("token");
     if (!token) redirect("/login");
@@ -41,6 +42,10 @@ export default async function BrandPage({ searchParams }: BrandPageProps) {
     label: "Marcas",
   };
 
+  const columns:Columns<Brand>[] = [
+    {key:"name", label:"Nombre"}
+  ]
+
   const brandData = await fetchData(brand.route, brand.label, `search=${search}&page=${page}`);
   const data: Brand[] = brandData[0];
   const limit = 10;
@@ -49,10 +54,10 @@ export default async function BrandPage({ searchParams }: BrandPageProps) {
   return (
     <>
       <div className="flex justify-center items-center">
-            <Table data={data} />
+            <Table<Brand> data={data} endpoint="brand" label="Marca" columns={columns} />
       </div>
       <Suspense fallback={<p>Cargando Paginación...</p>}>
-        <Pagination page={+page} totalPages={totalPages ? totalPages : 1} />
+        <Pagination page={+page} totalPages={totalPages ? totalPages : 1} endpoint="brand"/>
       </Suspense>
     </>
   );

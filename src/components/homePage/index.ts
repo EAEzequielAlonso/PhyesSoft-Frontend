@@ -1,0 +1,5 @@
+export * from "./BenefitsSection"
+export * from "./HeroSection"
+export * from "./PriceSection"
+export * from "./TestimonialsSection"
+export * from "./demoSection"

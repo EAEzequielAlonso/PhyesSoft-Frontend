@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import Filter from "./filter"
+import {Filter} from "@/components/"
 import {LuCirclePlus, LuListPlus} from "react-icons/lu"
 import Link from "next/link";
 
@@ -23,7 +23,7 @@ export default function BrandsListLayout({
           <h2 className="my-auto">Gestión de Marcas</h2>
         </div>
         <Suspense fallback={<p>Cargando Filtros...</p>}>
-          <Filter />     
+          <Filter endpoint="brand"/>     
         </Suspense>
         {children}
     </div>
