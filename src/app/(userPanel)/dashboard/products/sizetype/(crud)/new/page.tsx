@@ -1,4 +1,4 @@
-import { Brand, FormCrud } from "@/types";
+import { FormCrud, SizeType } from "@/types";
 import {CreateForm} from "@/components";
 
 interface Props {
@@ -12,9 +12,9 @@ const NewBrand: React.FC<Props> = async ({searchParams}) => {
     const createAdd = (await searchParams).createAdd
 
     // Datos a modificar de cada page.
-    const endpoint = "brand";
-    const label = "Marca";
-    const formCrud: FormCrud<Brand>[] = [
+    const endpoint = "sizetype";
+    const label = "Grupo de Talles";
+    const formCrud: FormCrud<SizeType>[] = [
         {label: "Nombre", elementForm: "text", key: "name"}
     ]
 

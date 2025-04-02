@@ -1,5 +1,5 @@
 import {CreateForm} from "@/components";
-import { Brand, FormCrud } from "@/types";
+import { Color, FormCrud } from "@/types";
 import { fetchDataOne } from "@/utils/crudFechServer";
 
 interface Props {
@@ -12,9 +12,9 @@ export default async function EditBrandPage ({params}: Props) {
     const brandId = (await params).id
 
     // Datos a modificar en cada page
-    const endpoint = "brand";
-    const label = "Marca"
-    const formCrud: FormCrud<Brand>[] = [
+    const endpoint = "color";
+    const label = "Color"
+    const formCrud: FormCrud<Color>[] = [
             {label: "Nombre", elementForm: "text", key: "name"}
         ]
 
