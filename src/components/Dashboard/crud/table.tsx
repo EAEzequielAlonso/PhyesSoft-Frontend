@@ -38,11 +38,28 @@ export function Table<T extends {id:string}> ({data, endpoint, label, columns}: 
                 <tr
                   key={dat.id}
                 >
-                  {columns.map((col) => (
-                    <td key={dat.id+col.key.toString()}>
-                      {dat[col.key as keyof T] as React.ReactNode}
-                    </td>
-                  ))}
+                  {columns.map((col) => {
+                      const rawValue = dat[col.key as keyof T];
+
+                      let cellContent: React.ReactNode;
+
+                      if (typeof rawValue === "object" && rawValue !== null) {
+                        // Si es un objeto, tratamos de obtener .name
+                        cellContent = (rawValue as { name?: string }).name ?? "";
+                      } else if (typeof rawValue === "number") {
+                        // Si es un número, formateamos como moneda
+                        cellContent = new Intl.NumberFormat("es-AR", {
+                          style: "currency",
+                          currency: "ARS",
+                          minimumFractionDigits: 2,
+                        }).format(rawValue);
+                      } else {
+                        // Si no, lo dejamos como está
+                        cellContent = rawValue as React.ReactNode;
+                      }
+
+                      return <td key={dat.id + col.key.toString()}>{cellContent}</td>;
+                    })}
 
                   <td className="text-center">
                   <Link href={`/dashboard/products/${endpoint}/${dat.id}`}>

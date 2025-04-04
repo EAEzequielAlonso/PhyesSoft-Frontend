@@ -3,11 +3,12 @@ import {BenefitsSection, DemoSection, HeroSection, PriceSection, TestimonialsSec
 export default function Home() {
   return (
     <>
-      <HeroSection/>
-      <BenefitsSection/>
-      <PriceSection/>
-      <DemoSection/>
-      <TestimonialsSection/>
+       <HeroSection/>  
+       <BenefitsSection/> 
+       <PriceSection/> 
+       <DemoSection/> 
+      <TestimonialsSection/> 
+      holaaaaa
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { FormCrud, Subcategory } from "@/types";
+import { FormCrud, Size } from "@/types";
 import {CreateForm} from "@/components";
 import { fetchDataRelation } from "@/utils/crudFechServer";
 
@@ -13,13 +13,13 @@ const NewBrand: React.FC<Props> = async ({searchParams}) => {
     const createAdd = (await searchParams).createAdd
 
     // Datos a modificar de cada page.
-    const endpoint = "subcategory";
-    const endpointRelatin = "category";
-    const label = "Subcategoria";
+    const endpoint = "size";
+    const endpointRelatin = "sizetype";
+    const label = "Talle";
     const dataRelation = await fetchDataRelation(endpointRelatin, label);
-    const formCrud: FormCrud<Subcategory>[] = [
+    const formCrud: FormCrud<Size>[] = [
         {label: "Nombre", elementForm: "text", key: "name"},
-        {label: "Categoria", elementForm: "select", key: "categoryId", data: dataRelation}
+        {label: "Grupo de Talles", elementForm: "select", key: "sizetypeId", data: dataRelation}
     ]
 
     return createAdd ? (

@@ -65,7 +65,7 @@ export function CreateForm<T extends { id?: string }>({
               <option value="">Seleccione una opción</option>
               {field.data?.map((option) => (
                 <option key={option.id} value={option.id}>
-                  {option.nombre || option.label}
+                  {option.name}
                 </option>
               ))}
             </select>

@@ -31,6 +31,13 @@ export interface Color {
     id: string;
     name: string;
   }
+
+  export interface Size {
+    id: string;
+    name: string;
+    sizetypeId: string;
+    sizetype?: Brand;
+  }
   
   export interface Product {
     id: string;
@@ -39,7 +46,7 @@ export interface Color {
     cost: number;
     profit: number;
     price: number;
-    startDate: Date;
+    createdAt: Date;
     endDate?: Date;
     category: Category;
     categoryId: string;
@@ -49,6 +56,6 @@ export interface Color {
     brandId: string;
     model: Model;
     modelId: string;
-    sizeType: SizeType;
-    sizeTypeId: string;
+    sizetype: SizeType;
+    sizetypeId: string;
   }
