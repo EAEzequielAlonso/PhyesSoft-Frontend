@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/context/ToastContext";
 import { FormCrud } from "@/types";
+import { useState } from "react";
 
 interface Props<T extends { id?: string }> {
   endpoint: string;
@@ -22,6 +23,8 @@ export function CreateForm<T extends { id?: string }>({
 }: Props<T>) {
   const route = useRouter();
   const { showToast } = useToast();
+  
+  const [dynamicOptions, setDynamicOptions] = useState<Record<string, any[]>>({});
 
   const handleAction = async (formData: FormData) => {
     try {
@@ -29,7 +32,7 @@ export function CreateForm<T extends { id?: string }>({
       formCrud.forEach((field) => {
         formObject[field.key] = formData.get(field.key as string) as any;
       });
-
+      
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}${item ? `/${item.id}` : ""}`,
         {
@@ -41,14 +44,31 @@ export function CreateForm<T extends { id?: string }>({
           body: JSON.stringify(formObject),
         }
       );
-
       if (!response.ok) throw new Error();
       showToast(`${label} ${item ? "actualizada" : "creada"} con éxito`, "success");
       if (!varios) route.push(`/dashboard/products/${endpoint}`);
-    } catch (error) {
+    } catch {
       showToast(`Error al ${item ? "actualizar" : "crear"} ${label}`, "error");
     }
   };
+
+  const handleOnChange = async (field: FormCrud<T>, value: string) => {
+    if (!field.relation) return;
+
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${field.relation.replace(/Id$/, "")}/${String(field.key).replace(/Id$/, "")}/${value}`, {
+        credentials: "include",
+      });
+      const data = await res.json();
+      setDynamicOptions((prev) => ({
+        ...prev,
+        [field.relation as string]: data,
+      }));
+    } catch (error) {
+      console.error("Error cargando datos relacionados:", error);
+    }
+  }
+
 
   return (
     <form action={handleAction}>
@@ -59,11 +79,12 @@ export function CreateForm<T extends { id?: string }>({
             <select
               name={field.key as string}
               defaultValue={String(item?.[field.key] ?? "")}
+              onChange= {(e) => handleOnChange(field, e.target.value)}
               required
               className="w-full border border-gray-300 rounded p-2"
             >
               <option value="">Seleccione una opción</option>
-              {field.data?.map((option) => (
+              {(dynamicOptions[field.key as string] ?? field.data)?.map((option) => (
                 <option key={option.id} value={option.id}>
                   {option.name}
                 </option>
@@ -85,7 +106,7 @@ export function CreateForm<T extends { id?: string }>({
           {item ? "Actualizar" : "Crear"}
         </button>
         <Link href={`/dashboard/products/${endpoint}`}>
-          <button type="button" className="btn-text-red">
+          <button type="button" className="btn-text-blue">
             Volver
           </button>
         </Link>

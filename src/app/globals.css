@@ -33,6 +33,7 @@ h2 { @apply text-lg font-semibold text-[#1976D2] mb-4}
 .btn-text-orange { @apply cursor-pointer px-3 py-2 bg-[#FF9800] text-white shadow-xl hover:bg-orange-600 active:scale-90 rounded text-lg}
 .btn-icon-orange { @apply cursor-pointer p-3 bg-[#FF9800] text-white shadow-xl hover:bg-orange-600 active:scale-90 rounded}
 .btn-text-red { @apply cursor-pointer px-4 py-1 bg-red-600 hover:bg-red-800 text-white shadow-xl rounded active:scale-90}
+.btn-text-blue { @apply cursor-pointer px-4 py-2 bg-[#0D47A1] hover:bg-blue-950 text-white rounded disabled:opacity-50 active:scale-90}
 
 /* estos son estilos para las tablas de mi app */
 .table { @apply w-full rounded-lg text-sm }

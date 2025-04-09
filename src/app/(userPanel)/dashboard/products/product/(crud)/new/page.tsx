@@ -28,9 +28,9 @@ const NewBrand: React.FC<Props> = async ({searchParams}) => {
         {label: "Costo", elementForm: "number", key: "cost"},
         {label: "Utilidad", elementForm: "number", key: "profit"},
         {label: "Precio", elementForm: "number", key: "price"},
-        {label: "Marca", elementForm: "select", key: "brandId", data: brand},
+        {label: "Marca", elementForm: "select", key: "brandId", data: brand, relation: "modelId"},
         {label: "Modelo", elementForm: "select", key: "modelId", data: model},
-        {label: "Categoria", elementForm: "select", key: "categoryId", data: category},
+        {label: "Categoria", elementForm: "select", key: "categoryId", data: category, relation: "subcategoryId"},
         {label: "Subcategoria", elementForm: "select", key: "subcategoryId", data: subcategory},
         {label: "Grupo de Talles", elementForm: "select", key: "sizetypeId", data: sizetype},
     ]

@@ -8,4 +8,5 @@ export interface FormCrud<T> {
    elementForm: "text" | "number" | "select";
    key: keyof T;
    data?: any[]; 
+   relation?: string;
 }
