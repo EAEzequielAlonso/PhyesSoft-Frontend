@@ -22,7 +22,7 @@ export default async function LoginForm({ errorMessage }: LoginFormProps) {
     const email = formData.get("email");
     const password = formData.get("password");
 
-    const res = await fetch("http://localhost:4000/auth/signin", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signin`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
