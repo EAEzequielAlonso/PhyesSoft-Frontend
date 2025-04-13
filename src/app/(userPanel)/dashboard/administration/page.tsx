@@ -1,7 +1,7 @@
-export default function AdministrationPage () {
+export default function ProductsPage () {
     return (
-        <section className="p-4">
-            <h1>este es el ADMINISTRATION</h1>
-        </section>
+        <div className="flex justify-center h-screen items-center">
+            <h1 className="text-7xl text-gray-300 font-bold">Gestión de Productos</h1>
+        </div>
     )
 }

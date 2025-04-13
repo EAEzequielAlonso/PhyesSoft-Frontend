@@ -1,13 +1,13 @@
 "use client"
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/context/ToastContext";
-import { FormCrud } from "@/types";
+import { FormCrud, SelectOption } from "@/types";
 import { useState } from "react";
 
 interface Props<T extends { id?: string }> {
   endpoint: string;
+  section: string;
   label: string;
   varios?: boolean;
   item?: T;
@@ -16,6 +16,7 @@ interface Props<T extends { id?: string }> {
 
 export function CreateForm<T extends { id?: string }>({
   endpoint,
+  section,
   label,
   varios = false,
   item,
@@ -24,13 +25,14 @@ export function CreateForm<T extends { id?: string }>({
   const route = useRouter();
   const { showToast } = useToast();
   
-  const [dynamicOptions, setDynamicOptions] = useState<Record<string, any[]>>({});
+  const [dynamicOptions, setDynamicOptions] = useState<Record<string, SelectOption[]>>({});
 
   const handleAction = async (formData: FormData) => {
     try {
       const formObject: Partial<T> = {};
       formCrud.forEach((field) => {
-        formObject[field.key] = formData.get(field.key as string) as any;
+        const value = formData.get(field.key as string);
+        if (value !== null) formObject[field.key] = value.toString() as T[keyof T];
       });
       
       const response = await fetch(
@@ -44,10 +46,13 @@ export function CreateForm<T extends { id?: string }>({
           body: JSON.stringify(formObject),
         }
       );
-      if (!response.ok) throw new Error();
+      if (!response.ok) {
+        throw new Error();
+      }
       showToast(`${label} ${item ? "actualizada" : "creada"} con éxito`, "success");
-      if (!varios) route.push(`/dashboard/products/${endpoint}`);
+      if (!varios) route.push(`/dashboard/${section}/${endpoint}`);
     } catch {
+      
       showToast(`Error al ${item ? "actualizar" : "crear"} ${label}`, "error");
     }
   };
@@ -105,11 +110,6 @@ export function CreateForm<T extends { id?: string }>({
         <button type="submit" className="btn-text-green">
           {item ? "Actualizar" : "Crear"}
         </button>
-        <Link href={`/dashboard/products/${endpoint}`}>
-          <button type="button" className="btn-text-blue">
-            Volver
-          </button>
-        </Link>
       </div>
     </form>
   );

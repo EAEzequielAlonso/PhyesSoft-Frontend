@@ -13,6 +13,7 @@ const NewBrand: React.FC<Props> = async ({searchParams}) => {
 
     // Datos a modificar de cada page.
     const endpoint = "category";
+    const section= "products"
     const label = "Categorias";
     const formCrud: FormCrud<Category>[] = [
         {label: "Nombre", elementForm: "text", key: "name"}
@@ -20,11 +21,11 @@ const NewBrand: React.FC<Props> = async ({searchParams}) => {
 
     return createAdd ? (
         <div className="w-2/3 bg-white p-4 rounded-lg shadow-xl border border-gray-300 m-auto mt-8">
-          <CreateForm endpoint={endpoint} label={label} varios={true} formCrud={formCrud}/>
+          <CreateForm endpoint={endpoint} section={section} label={label} varios={true} formCrud={formCrud}/>
         </div>
     ) : (
         <div className="w-2/3 bg-white p-4 rounded-lg shadow-xl border border-gray-300 m-auto mt-8">
-        <CreateForm endpoint={endpoint} label={label} formCrud={formCrud}/>
+        <CreateForm endpoint={endpoint} section={section} label={label} formCrud={formCrud}/>
       </div> 
     )
 }

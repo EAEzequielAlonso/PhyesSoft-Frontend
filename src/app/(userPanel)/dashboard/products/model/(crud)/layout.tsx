@@ -8,7 +8,7 @@ export default function CrudLayout({
 
   return (
     <div className = "pt-5 w-2/3 m-auto">
-        <LayoutCrudPrincipal endpoint="model" title="Gestión de Modelos" needFilter={false}/>
+        <LayoutCrudPrincipal endpoint="products/model" title="Gestión de Modelos" needFilter={false}/>
         {children}
     </div>
   );

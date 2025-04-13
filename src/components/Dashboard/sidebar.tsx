@@ -1,11 +1,11 @@
 "use client"; // Requiere interactividad
 
 import React, { useState, useCallback } from "react";
+import { FaShop } from "react-icons/fa6";
 import {
   LuShoppingCart,    // Ventas
-  LuShirt,           // Productos
+  LuShoppingBasket,           // Productos
   LuGauge,           // Dashboard
-  LuSettings,        // Administración
   LuUser,            // Mi Cuenta
   LuBrainCircuit,    // Inteligencia Artigficial
   LuChartNoAxesCombined, // Balances
@@ -81,7 +81,7 @@ export const Sidebar: React.FC = () => {
 
         <MenuItem
           href={"/dashboard/products"}
-          icon={<LuShirt size={20} />}
+          icon={<LuShoppingBasket size={20} />}
           text={"Productos"}
           isOpen={isOpen}
           active={pathname.endsWith("/dashboard/products")}
@@ -89,8 +89,8 @@ export const Sidebar: React.FC = () => {
 
         <MenuItem
           href={"/dashboard/administration"}
-          icon={<LuSettings size={20} />}
-          text={"Administración"}
+          icon={<FaShop size={20} />}
+          text={"Mi Comercio"}
           isOpen={isOpen}
           active={pathname.endsWith("/dashboard/administration")}
         />

@@ -7,11 +7,12 @@ import { Columns } from "@/types";
 interface Props<T>  {
     data: T[],
     endpoint:string,
+    section: string,
     label:string
     columns: Columns<T>[]
 }
   
-export function Table<T extends {id:string}> ({data, endpoint, label, columns}: Props<T>) {
+export function Table<T extends {id:string}> ({data, endpoint, section, label, columns}: Props<T>) {
 
   const isValidArray = Array.isArray(data) && data.length > 0;
 
@@ -62,7 +63,7 @@ export function Table<T extends {id:string}> ({data, endpoint, label, columns}: 
                     })}
 
                   <td className="text-center">
-                  <Link href={`/dashboard/products/${endpoint}/${dat.id}`}>
+                  <Link href={`/dashboard/${section}/${endpoint}/${dat.id}`}>
                      <button className="btn-text-green mx-2 my-1"><LuPencil /></button>
                   </Link>  
                   <ButtonDelete id={dat.id} endpoint={endpoint} label={label} />

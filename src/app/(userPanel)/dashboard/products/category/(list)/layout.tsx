@@ -8,7 +8,7 @@ export default function ListLayout({
 
   return (
     <div className = "pt-5 w-2/3 m-auto">
-        <LayoutCrudPrincipal endpoint="category" title="Gestión de Categorias" needFilter={true}/>
+        <LayoutCrudPrincipal endpoint="products/category" title="Gestión de Categorias" needFilter={true}/>
         {children}
     </div>
   );

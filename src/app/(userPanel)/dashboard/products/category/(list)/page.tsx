@@ -18,6 +18,7 @@ export default async function ListPage({ searchParams }: ListPageProps) {
   // datos Particulares de cada uno
   const columns:Columns<Category>[] = [{key:"name", label:"Nombre"}]
   const endpoint = "category";
+  const section = "products"
   const label = "Categoria"
 
   const datafromfetch = await fetchData(endpoint, label, `search=${search}&page=${page}`);
@@ -28,7 +29,7 @@ export default async function ListPage({ searchParams }: ListPageProps) {
   return (
     <>
       <div className="flex justify-center items-center">
-            <Table<Category> data={data} endpoint={endpoint} label={label} columns={columns} />
+            <Table<Category> data={data} endpoint={endpoint} section={section} label={label} columns={columns} />
       </div>
       <Suspense fallback={<p>Cargando Paginación...</p>}>
         <Pagination page={+page} totalPages={totalPages ? totalPages : 1} endpoint={endpoint} />

@@ -17,7 +17,7 @@ export function Filter({endpoint}:{endpoint:string}) {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Actualizamos la URL sin recargar el layout
-    router.push(`/dashboard/products/${endpoint}?search=${encodeURIComponent(search)}`);
+    router.push(`/dashboard/${endpoint}?search=${encodeURIComponent(search)}`);
   };
 
   return (

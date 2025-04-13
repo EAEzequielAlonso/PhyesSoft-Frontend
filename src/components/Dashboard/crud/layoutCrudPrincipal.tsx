@@ -13,12 +13,19 @@ export function LayoutCrudPrincipal ({endpoint, title, needFilter = true} : Prop
     return <>
         <div className="flex justify-between items-center gap-3 mb-1">
           <div>
-            <Link href={`/dashboard/products/${endpoint}/new`}>
+            <Link href={`/dashboard/${endpoint}/new`}>
               <button className="btn-icon-orange mr-3"><LuCirclePlus/></button>
             </Link>
-            <Link href={`/dashboard/products/${endpoint}/new?createAdd=true`}>
-               <button className="btn-icon-orange"> <LuListPlus/> </button>
+            <Link href={`/dashboard/${endpoint}/new?createAdd=true`}>
+               <button className="btn-icon-orange mr-3"> <LuListPlus/> </button>
             </Link>
+            {!needFilter && 
+            <Link href={`/dashboard/${endpoint}`}>
+              <button type="button" className="btn-text-blue ml-3">
+                Volver
+              </button>
+            </Link>
+            }
           </div>
           <h2 className="my-auto">{title}</h2>
         </div>

@@ -8,7 +8,7 @@ export default function ListLayout({
 
   return (
     <div className = "pt-5 w-2/3 m-auto">
-        <LayoutCrudPrincipal endpoint="subcategory" title="Gestión de Subcategorias" needFilter={true}/>
+        <LayoutCrudPrincipal endpoint="products/subcategory" title="Gestión de Subcategorias" needFilter={true}/>
         {children}
     </div>
   );

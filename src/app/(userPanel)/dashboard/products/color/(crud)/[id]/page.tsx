@@ -13,6 +13,7 @@ export default async function EditBrandPage ({params}: Props) {
 
     // Datos a modificar en cada page
     const endpoint = "color";
+    const section = "products"
     const label = "Color"
     const formCrud: FormCrud<Color>[] = [
             {label: "Nombre", elementForm: "text", key: "name"}
@@ -22,7 +23,7 @@ export default async function EditBrandPage ({params}: Props) {
 
     return (
         <div className="w-2/3 bg-white p-4 rounded-lg shadow-xl border border-gray-300 m-auto mt-8">
-            <CreateForm endpoint={endpoint} label={label} item={data} formCrud={formCrud}/>
+            <CreateForm endpoint={endpoint} section={section} label={label} item={data} formCrud={formCrud}/>
         </div> 
     )
     
