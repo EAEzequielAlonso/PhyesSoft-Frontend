@@ -5,6 +5,8 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   const token = request.cookies.get('token')?.value;
 
+  console.log("este es el token en el middlewar: ", token)
+
   const isAuth = !!token;
 
   const isDashboardPath = request.nextUrl.pathname.startsWith('/dashboard');
