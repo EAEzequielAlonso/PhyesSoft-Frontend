@@ -3,17 +3,20 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 export const fetchData = async (endpoint: string, label: string, search: string) => {
+  console.log("endpint, label, search", endpoint, label, search);
 
   try {
-    const token = (await cookies()).get("token");
-    if (!token) redirect("/login");
+
+    const token = (await cookies()).get("token")?.value;
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${endpoint}?${search}`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${token.value}`,
         "Content-Type": "application/json",
+        ...(token && { Cookie: `token=${token}` }),
       },
+      credentials: "include", // muy importante para que se envíen cookies
+      cache: "no-store", // opcional, si querés evitar cacheo en server components
     });
     const resp = await response.json();
     return resp;
@@ -22,15 +25,17 @@ export const fetchData = async (endpoint: string, label: string, search: string)
   }
 };
 
-export const fetchDataOne = async (endpoint: string, label: string, brandId: string) => {
+export const fetchDataOne = async (endpoint: string, label: string, relationId: string) => {
   try {
-    const token = (await cookies()).get("token");
+    const token = (await cookies()).get("token")?.value;
     if (!token) redirect("/login");
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${endpoint}/${brandId}`, {
+
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${endpoint}/${relationId}`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${token.value}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     });

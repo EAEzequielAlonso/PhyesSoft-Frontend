@@ -1,6 +1,7 @@
 "use client"; // Requiere interactividad
 
 import React, { useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { FaShop } from "react-icons/fa6";
 import {
   LuShoppingCart,    // Ventas
@@ -11,12 +12,12 @@ import {
   LuChartNoAxesCombined, // Balances
   LuLogOut           // Logout
 } from "react-icons/lu";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import {MenuItem} from "@/components";
 
 export const Sidebar: React.FC = () => {
-  const router = useRouter();
+  //const router = useRouter();
   const [isOpen, setIsOpen] = useState(true);
   // const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const pathname = usePathname();
@@ -34,12 +35,29 @@ export const Sidebar: React.FC = () => {
   //   },
   //   [openSubmenu]
   // );
-
+  const router = useRouter();
   const handleLogout = async () => {
-    await fetch("/api", {
-      method: "POST",
-    });
-    router.push("/"); // Redirige a la página inicial
+    try {
+      // Primero deslogueo en NestJS
+      const resNest = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signout`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+
+      // Luego deslogueo en NextJS
+      const resNext = await fetch('/api/signout', {
+        method: 'POST',
+        credentials: 'include',
+      });
+
+      if (resNest.ok && resNext.ok) {
+        router.push('/');
+      } else {
+        console.error('Error cerrando sesión');
+      }
+    } catch (err) {
+      console.error('Error en logout', err);
+    }
   };
 
   return (
@@ -68,7 +86,7 @@ export const Sidebar: React.FC = () => {
           icon={<LuGauge size={20} />}
           text={"Panel Principal"}
           isOpen={isOpen}
-          active={pathname.endsWith("/dashboard")}
+          active={pathname!.endsWith("/dashboard")}
         />
 
         <MenuItem
@@ -76,7 +94,7 @@ export const Sidebar: React.FC = () => {
           icon={<LuShoppingCart size={20} />}
           text={"Ventas"}
           isOpen={isOpen}
-          active={pathname.endsWith("/dashboard/sales")}
+          active={pathname!.endsWith("/dashboard/sales")}
         />
 
         <MenuItem
@@ -84,7 +102,7 @@ export const Sidebar: React.FC = () => {
           icon={<LuShoppingBasket size={20} />}
           text={"Productos"}
           isOpen={isOpen}
-          active={pathname.endsWith("/dashboard/products")}
+          active={pathname!.endsWith("/dashboard/products")}
         />
 
         <MenuItem
@@ -92,7 +110,7 @@ export const Sidebar: React.FC = () => {
           icon={<FaShop size={20} />}
           text={"Mi Comercio"}
           isOpen={isOpen}
-          active={pathname.endsWith("/dashboard/administration")}
+          active={pathname!.endsWith("/dashboard/administration")}
         />
 
         <MenuItem
@@ -100,7 +118,7 @@ export const Sidebar: React.FC = () => {
           icon={<LuChartNoAxesCombined size={20} />}
           text={"Reportes"}
           isOpen={isOpen}
-          active={pathname.endsWith("/dashboard/reports")}
+          active={pathname!.endsWith("/dashboard/reports")}
         />
 
         <MenuItem
@@ -108,7 +126,7 @@ export const Sidebar: React.FC = () => {
           icon={<LuBrainCircuit size={20} />}
           text={"Inteligencia Artifical"}
           isOpen={isOpen}
-          active={pathname.endsWith("/dashboard/ia")}
+          active={pathname!.endsWith("/dashboard/ia")}
         />
 
         <MenuItem
@@ -116,15 +134,15 @@ export const Sidebar: React.FC = () => {
           icon={<LuUser size={20} />}
           text={"Mi Cuenta"}
           isOpen={isOpen}
-          active={pathname.endsWith("/dashboard/mycount")}
+          active={pathname!.endsWith("/dashboard/mycount")}
         />
-
-        <button onClick={handleLogout} className="flex items-center gap-3 p-2 rounded hover:bg-blue-600 transition w-full">
+        <button onClick={handleLogout} className="flex items-center cursor-pointer gap-3 p-2 rounded hover:bg-blue-600 transition w-full">
           <div className="flex items-center gap-3">
             <LuLogOut size={20} />
             {isOpen && <span className="w-32 text-left">Cerrar Sesión</span>}
           </div>
         </button>
+        
         
       </nav>
     </aside>

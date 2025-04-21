@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/localizations": "^3.13.10",
     "framer-motion": "^12.6.0",
     "lucide-react": "^0.484.0",
     "next": "15.2.4",

@@ -1,44 +1,37 @@
-// app/login/page.tsx
-"use server";
+// app/login/LoginForm.tsx
 
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { FcGoogle } from 'react-icons/fc';
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import Link from "next/link";
-import { FcGoogle } from "react-icons/fc";
 
-interface LoginFormProps {
-  errorMessage?: string;
-}
+export default function LoginForm({errorMessage}: {errorMessage?:string}) {
 
-export default async function LoginForm({ errorMessage }: LoginFormProps) {
-  // Verifica si ya existe un token en la cookie
-  const token = (await cookies()).get("token");
-  if (token) {
-    redirect("/dashboard");
-  }
+  async function handleAction(formData: FormData) {
+    "use server"
+    const email = formData.get('email');
+    const password = formData.get('password');
 
-  async function loginAction(formData: FormData) {
-    "use server";
-    const email = formData.get("email");
-    const password = formData.get("password");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signin`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signin`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+      if (!res.ok) redirect(`/login?error=${errorMessage}`);
 
-    const data = await res.json();
-    if (!res.ok) {
-      return redirect("/login?error=" + encodeURIComponent(data.message));
-    }
-    (await cookies()).set("token", data.token, {
-      httpOnly: true,
-      secure: true,
-      path: "/",
-      maxAge: 86400, // 1 día en segundos
-    });
-    redirect("/dashboard");
+      const { token } = await res.json();
+    const isProd = process.env.NODE_ENV === "production";
+  // ✅ Establecer cookie HTTP-only en Next.js
+   (await cookies()).set("token", token, {
+    httpOnly: true,
+    secure: isProd,
+    sameSite: isProd ? 'none' : 'lax',
+    path: "/",
+    maxAge: 60 * 60 * 24, // 1 día
+  });
+      
+      redirect('/dashboard');
   }
 
   return (
@@ -48,11 +41,9 @@ export default async function LoginForm({ errorMessage }: LoginFormProps) {
           Iniciar Sesión
         </h1>
         {errorMessage && (
-          <p className="text-center text-sm text-red-600">
-            {errorMessage}
-          </p>
+          <p className="text-center text-sm text-red-600">{errorMessage}</p>
         )}
-        <form action={loginAction} className="space-y-5">
+        <form action={handleAction} className="space-y-5">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Correo Electrónico
@@ -81,7 +72,7 @@ export default async function LoginForm({ errorMessage }: LoginFormProps) {
           </div>
           <button
             type="submit"
-            className="w-full py-2 px-4 bg-[#FF9800] hover:bg-[#e68900] transition-colors duration-200 rounded-md font-semibold text-white shadow-md"
+            className="w-full py-2 px-4 bg-[#FF9800] hover:bg-[#e68900] transition-colors cursor-pointer duration-200 rounded-md font-semibold text-white shadow-md"
           >
             Iniciar Sesión
           </button>

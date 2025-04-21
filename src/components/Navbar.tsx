@@ -49,12 +49,17 @@ export function Navbar() {
         </nav>
         {/* Acciones: Login y CTA */}
         <div className="flex items-center space-x-4">
-          <Link href="/login" className="text-white font-roboto hover:text-orange-500 hover:underline">
+           <Link href="/login" className="text-white font-roboto hover:text-orange-500 hover:underline">
             Login
-          </Link>
+          </Link> 
           <Link href="/prueba-gratis" className="bg-[#FF9800] text-white font-montserrat font-bold px-4 py-2 rounded hover:bg-[#e68900]">
               Prueba Gratis
           </Link>
+  
+            {/* <Link href="/dashboard" className="bg-[#FF9800] text-white font-montserrat font-bold px-4 py-2 rounded hover:bg-[#e68900]">
+                Mi Comercio
+            </Link>
+  */}
         </div>
       </div>
     </header>
