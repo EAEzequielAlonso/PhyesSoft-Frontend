@@ -17,8 +17,8 @@ export default function LoginForm({errorMessage}: {errorMessage?:string}) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
-
-      if (!res.ok) redirect(`/login?error=${errorMessage}`);
+      const { message } = await res.json();
+      if (!res.ok) redirect(`/login?error=${message}`);
 
       const { token } = await res.json();
     const isProd = process.env.NODE_ENV === "production";
