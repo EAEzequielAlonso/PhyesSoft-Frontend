@@ -1,12 +1,13 @@
-import LoginForm from "@/components/loginForm";
 
-interface Prop {
-  searchParams : Promise<{error?: string}>
-}
+import LoginFormClient from "@/components/loginFormClient";
 
-  export default async function LoginPage({searchParams}: Prop) {
-    const errorMessage = (await searchParams).error;
+// interface Prop {
+//   searchParams : Promise<{error?: string}>
+// }
+
+  export default async function LoginPage() {
+    //const errorMessage = (await searchParams).error;
     return (
-       <LoginForm errorMessage={errorMessage}/>
+       <LoginFormClient/>
     );
   }

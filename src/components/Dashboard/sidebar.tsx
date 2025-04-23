@@ -45,7 +45,7 @@ export const Sidebar: React.FC = () => {
       });
 
       // Luego deslogueo en NextJS
-      const resNext = await fetch('/api/signout', {
+      const resNext = await fetch('/api/auth/signout', {
         method: 'POST',
         credentials: 'include',
       });

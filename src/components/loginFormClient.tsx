@@ -1,37 +1,56 @@
-// app/login/LoginForm.tsx
-{/** 
+'use client';
+
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { FcGoogle } from 'react-icons/fc';
-import { cookies } from "next/headers";
 
-export default function LoginForm({errorMessage}: {errorMessage?:string}) {
+export default function LoginFormClient() {
+  const router = useRouter();
+  const [error, setError] = useState('');
 
-  async function handleAction(formData: FormData) {
-    "use server"
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
     const email = formData.get('email');
     const password = formData.get('password');
 
+    setError('');
+
+    try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signin`, {
         method: 'POST',
+        credentials: "include",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
-      const { message } = await res.json();
-      if (!res.ok) redirect(`/login?error=${message}`);
 
-      const { token } = await res.json();
-    const isProd = process.env.NODE_ENV === "production";
-  // ✅ Establecer cookie HTTP-only en Next.js
-   (await cookies()).set("token", token, {
-    httpOnly: true,
-    secure: isProd,
-    sameSite: isProd ? 'none' : 'lax',
-    path: "/",
-    maxAge: 60 * 60 * 24, // 1 día
-  });
-      
-      redirect('/dashboard');
+      const dataJson = await res.json();
+
+      if (!res.ok) {
+        setError(dataJson.message || 'Error al iniciar sesión');
+        return;
+      }
+
+      const { token } = dataJson;
+
+      // Llamada a API interna para setear cookie HttpOnly
+      const cookieRes = await fetch('/api/auth/cookie', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token }),
+      });
+
+      if (!cookieRes.ok) {
+        setError('No se pudo guardar la sesión');
+        return;
+      }
+
+      router.push('/dashboard');
+    } catch (err) {
+      console.error(err);
+      setError('Ocurrió un error inesperado');
+    }
   }
 
   return (
@@ -40,10 +59,10 @@ export default function LoginForm({errorMessage}: {errorMessage?:string}) {
         <h1 className="text-3xl font-bold font-montserrat text-center text-[#0D47A1]">
           Iniciar Sesión
         </h1>
-        {errorMessage && (
-          <p className="text-center text-sm text-red-600">{errorMessage}</p>
+        {error && (
+          <p className="text-center text-sm text-red-600">{error}</p>
         )}
-        <form action={handleAction} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Correo Electrónico
@@ -106,4 +125,3 @@ export default function LoginForm({errorMessage}: {errorMessage?:string}) {
     </div>
   );
 }
-*/}
