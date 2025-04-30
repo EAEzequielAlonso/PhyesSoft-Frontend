@@ -1,4 +1,4 @@
-import {LayoutCrudPrincipal} from "@/components/"
+import {LayoutCrudPrincipal} from "@/components/dashboard"
 
 export default function ListLayout({
   children,

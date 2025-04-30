@@ -1,5 +1,5 @@
-import {Pagination, Table} from "@/components";
-import { fetchData } from "@/utils/crudFechServer";
+import {Pagination, Table} from "@/components/dashboard";
+import { fetchData } from "@/fetchs/dashboard/crudFechServer";
 import { Brand } from "@/types";
 import { Suspense } from "react";
 import { Columns } from "@/types";

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "../globals.css";
-import {Sidebar} from "@/components";
+import {Sidebar} from "../../components/dashboard";
 import { montserrat } from "../font/fonts";
 import { ToastProvider } from "@/context/ToastContext";
 

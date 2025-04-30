@@ -1,6 +1,6 @@
-import {CreateForm} from "@/components";
+import {CreateForm} from "@/components/dashboard";
 import { Brand, FormCrud } from "@/types";
-import { fetchDataOne } from "@/utils/crudFechServer";
+import { fetchDataOne } from "@/fetchs/dashboard/crudFechServer";
 
 interface Props {
     params: Promise<{

@@ -4,7 +4,7 @@ import { LuTrash } from "react-icons/lu";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/context/ToastContext";
 import { useState } from "react";
-import { ConfirmModal } from "@/components";
+import { ConfirmModal } from "../";
 
 interface Props {
   id: string;

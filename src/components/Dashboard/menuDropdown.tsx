@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { memo } from "react";
 import { FiChevronDown } from "react-icons/fi";
-import {MenuItem} from "@/components";
+import {MenuItem} from "./";
 
 interface MenuDropdownItem {
   icon: React.ReactElement;

@@ -1,3 +1,6 @@
-export default function ForgotPassword () {
-    return <h1>Olvidaste contraseña</h1>
+import {ForgotPasswordForm} from '@/components';
+
+export default async function ForgotPassword() {
+
+  return <ForgotPasswordForm />;
 }

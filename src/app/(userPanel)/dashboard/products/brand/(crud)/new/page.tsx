@@ -1,5 +1,5 @@
 import { Brand, FormCrud } from "@/types";
-import {CreateForm} from "@/components";
+import {CreateForm} from "@/components/dashboard";
 
 interface Props {
     searchParams: Promise<{

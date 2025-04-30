@@ -11,7 +11,7 @@ export interface SelectOption {
 
 export interface FormCrud<T> {
    label: string;
-   elementForm: "text" | "number" | "select";
+   elementForm: "text" | "number" | "select" | "email" | "checkbox" | "date";
    key: keyof T;
    data?: SelectOption[]; 
    relation?: string;

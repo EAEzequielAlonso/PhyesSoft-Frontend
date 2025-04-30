@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FcGoogle } from 'react-icons/fc';
 
-export default function LoginFormClient() {
+export const LoginFormClient = () => {
   const router = useRouter();
   const [error, setError] = useState('');
 
@@ -54,8 +54,8 @@ export default function LoginFormClient() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F5F5F5] px-4">
-      <div className="max-w-md w-full bg-white shadow-xl rounded-xl p-8 space-y-6">
+    <div className="min-h-screen flex justify-center bg-[#F5F5F5] px-4">
+      <div className="max-w-md w-full mt-5 h-full bg-white shadow-xl rounded-xl p-8 space-y-6">
         <h1 className="text-3xl font-bold font-montserrat text-center text-[#0D47A1]">
           Iniciar Sesión
         </h1>

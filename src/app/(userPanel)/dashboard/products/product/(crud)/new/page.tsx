@@ -1,6 +1,6 @@
 import { FormCrud, Product } from "@/types";
-import {CreateForm} from "@/components";
-import { fetchDataRelation } from "@/utils/crudFechServer";
+import {CreateForm} from "@/components/dashboard";
+import { fetchDataRelation } from "@/fetchs/dashboard/crudFechServer";
 
 interface Props {
     searchParams: Promise<{

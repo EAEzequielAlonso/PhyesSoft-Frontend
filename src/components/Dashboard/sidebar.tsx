@@ -14,7 +14,7 @@ import {
 } from "react-icons/lu";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import {MenuItem} from "@/components";
+import {MenuItem} from "./";
 
 export const Sidebar: React.FC = () => {
   //const router = useRouter();

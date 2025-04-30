@@ -1,6 +1,6 @@
 
 import { LuPencil } from "react-icons/lu";
-import {ButtonDelete} from "@/components"
+import {ButtonDelete} from "."
 import Link from "next/link";
 import { Columns } from "@/types";
 
