@@ -1,6 +1,6 @@
-import { dataEmitionType, FormCrud, SalePoint } from "@/types";
+import { FormCrud, SalePoint } from "@/types";
 import {CreateForm} from "@/components";
-import { fetchDataRelation } from "@/fetchs/dashboard/crudFechServer";
+import { fetchData, fetchDataRelation } from "@/fetchs/dashboard/crudFechServer";
 
 interface Props {
     searchParams: Promise<{
@@ -8,22 +8,24 @@ interface Props {
     }>
 }
 
-const NewBrand: React.FC<Props> = async ({searchParams}) => {
+const NewSalePoint: React.FC<Props> = async ({searchParams}) => {
 
     const createAdd = (await searchParams).createAdd
 
     // Datos a modificar de cada page.
     const endpoint = "sale-point";
     const section = "administration";
-    const endpointRelatin = "branch";
-    const label = "Sucursal";
-    const dataRelation = await fetchDataRelation(endpointRelatin, label);
+    const label = "Punto de Venta"; 
+    const [branch, emissionType] = await Promise.all ([
+        fetchDataRelation("branch", "Sucursal"),
+        fetchData("fiscal-data/emissiontype", "Tipo de emisión", ""),
+    ])
 
     const formCrud: FormCrud<SalePoint>[] = [
         {label: "Codigo", elementForm: "text", key: "name"},
         {label: "Descripción", elementForm: "text", key: "description"},
-        {label: "Tipo de Emisión", elementForm: "select", key: "emitionType", data: dataEmitionType},
-        {label: "Sucursal", elementForm: "select", key: "branchId", data: dataRelation}
+        {label: "Tipo de Emisión", elementForm: "select", key: "emissionType", data: emissionType},
+        {label: "Sucursal", elementForm: "select", key: "branchId", data: branch}
     ]
 
     return createAdd ? (
@@ -37,4 +39,4 @@ const NewBrand: React.FC<Props> = async ({searchParams}) => {
     )
 }
 
-export default NewBrand;
+export default NewSalePoint;

@@ -1,5 +1,6 @@
 import { Branch, FormCrud } from "@/types";
 import {CreateForm} from "@/components/dashboard";
+import { fetchDataRelation } from "@/fetchs/dashboard/crudFechServer";
 
 interface Props {
     searchParams: Promise<{
@@ -15,12 +16,17 @@ const NewBrand: React.FC<Props> = async ({searchParams}) => {
     const endpoint = "branch";
     const section = "administration";
     const label = "Sucursal";
+    const fiscalData = await fetchDataRelation("fiscal-data", "Dato Fiscal")
+    
+    console.log(`esta es la data fiscal: ${JSON.stringify(fiscalData)}`)
     const formCrud: FormCrud<Branch>[] = [
         {label: "Nombre", elementForm: "text", key: "name"},
         {label: "Dirección", elementForm: "text", key: "address"},
         {label: "Ciudad", elementForm: "text", key: "city"},
+        {label: "Telefono", elementForm: "number", key: "phone"},
         {label: "Email de Sucursal", elementForm: "email", key: "emailBranch"},
         {label: "Inicio de Actividad", elementForm: "date", key: "initDate"},
+        {label: "Datos Fiscales", elementForm: "select", key: "fiscalDataId", data: fiscalData },
         {label: "Es La Central", elementForm: "checkbox", key: "central"},
     ]
 

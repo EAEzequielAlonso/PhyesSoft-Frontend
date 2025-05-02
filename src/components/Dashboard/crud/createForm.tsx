@@ -34,12 +34,12 @@ export function CreateForm<T extends { id?: string }>({
         const value = formData.get(field.key as string);
 
         if (field.elementForm === "checkbox") {
-          formObject[field.key] = (value === "on") as T[keyof T]; // Checkbox devuelve "on" si está tildado
+          formObject[field.key] = (value === "on") as T[keyof T];
         } else if (value !== null) {
-          formObject[field.key] = value.toString() as T[keyof T];
-        }
+            formObject[field.key] = value.toString() as T[keyof T];
+          }
       });
-      
+      console.log("esto es lo que envio al seridor: ", formObject)
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}${item ? `/${item.id}` : ""}`,
         {
@@ -51,6 +51,7 @@ export function CreateForm<T extends { id?: string }>({
           body: JSON.stringify(formObject),
         }
       );
+      
       if (!response.ok) {
         throw new Error();
       }
@@ -101,7 +102,6 @@ export function CreateForm<T extends { id?: string }>({
                   name={field.key as string}
                   defaultValue={String(item?.[field.key] ?? "")}
                   onChange={(e) => handleOnChange(field, e.target.value)}
-                  required
                   className="w-full border border-gray-300 rounded p-2"
                 >
                   <option value="">Seleccione una opción</option>

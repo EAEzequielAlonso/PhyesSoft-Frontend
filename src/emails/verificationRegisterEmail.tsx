@@ -12,7 +12,7 @@ export async function sendVerificationEmail(to: string, code: string) {
     emailComponent: <VerificationEmail code={code} email={to} />,
 
   }
-  sendEmail(email)
+
   try {
     const info = await sendEmail(email)
     console.log('Correo enviado:', info.response);

@@ -63,13 +63,13 @@ export const Sidebar: React.FC = () => {
   return (
     <>
     <div className={`bg-blue-700 text-white h-screen p-2 ${
-        isOpen ? "w-48 mr-6" : "w-14"
+        isOpen ? "w-40 mr-4" : "w-14"
       } transition-all duration-300 ease-in-out `}>
 
     </div>
     <aside
       className={`bg-blue-700 text-white h-screen p-2 fixed overflow-y-auto ${
-        isOpen ? "w-48" : "w-14"
+        isOpen ? "w-40" : "w-14"
       } transition-all duration-300 ease-in-out`}
     >
       {/* Botón para abrir/cerrar el sidebar */}
@@ -79,7 +79,7 @@ export const Sidebar: React.FC = () => {
       </button>
 
       {/* Menú */}
-      <nav className="space-y-2 text-sm">
+      <nav className="space-y-2 text-[13px]">
 
        <MenuItem
           href={"/dashboard"}
@@ -124,7 +124,7 @@ export const Sidebar: React.FC = () => {
         <MenuItem
           href={"/dashboard/ia"}
           icon={<LuBrainCircuit size={20} />}
-          text={"Inteligencia Artifical"}
+          text={"I. Artifical"}
           isOpen={isOpen}
           active={pathname!.endsWith("/dashboard/ia")}
         />

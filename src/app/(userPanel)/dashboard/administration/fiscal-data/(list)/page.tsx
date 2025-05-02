@@ -1,7 +1,7 @@
 import {Pagination, Table} from "@/components/dashboard";
 import { fetchData } from "@/fetchs/dashboard/crudFechServer";
 import { Suspense } from "react";
-import { Columns, SalePoint } from "@/types";
+import { Columns, FiscalData } from "@/types";
 
 interface ListPageProps {
   searchParams: Promise <{ 
@@ -15,14 +15,14 @@ export default async function ListPage({ searchParams }: ListPageProps) {
   const {search = "", page = "1"} = await searchParams;
 
   // datos Particulares de cada uno
-  const columns:Columns<SalePoint>[] = [
-    {key:"name", label:"Codigo"}, 
-    {key:"branch", label:"Sucursal"},
-    {key:"emitionType", label:"Tipo de Emisión"}
+  const columns:Columns<FiscalData>[] = [
+    {key:"name", label:"Razon Social"}, 
+    {key:"cuit", label:"CUIT"},
+    {key:"conditionIva", label:"Cond. IVA"}
   ]
-  const endpoint = "sale-point";
+  const endpoint = "fiscal-data";
   const section = "administration"
-  const label = "Punto de Venta"
+  const label = "Dato Fiscale"
 
   const datafromfetch = await fetchData(endpoint, label, `search=${search}&page=${page}`);
   const data = datafromfetch[0];
@@ -32,7 +32,7 @@ export default async function ListPage({ searchParams }: ListPageProps) {
   return (
     <>
       <div className="flex justify-center items-center">
-            <Table<SalePoint> data={data} endpoint={endpoint} section={section} label={label} columns={columns} />
+            <Table<FiscalData> data={data} endpoint={endpoint} section={section} label={label} columns={columns} />
       </div>
       <Suspense fallback={<p>Cargando Paginación...</p>}>
         <Pagination page={+page} totalPages={totalPages ? totalPages : 1} endpoint={endpoint} />

@@ -1,4 +1,4 @@
-import {Pagination, Table} from "@/components/dashboard";
+import {Pagination, Table} from "@/components";
 import { fetchData } from "@/fetchs/dashboard/crudFechServer";
 import { Branch } from "@/types";
 import { Suspense } from "react";
@@ -18,7 +18,8 @@ export default async function ListPage({ searchParams }: ListPageProps) {
   // datos Particulares de cada uno
   const columns:Columns<Branch>[] = [
     {key:"name", label:"Nombre"},
-    {key:"address", label:"Dirección"}
+    {key:"address", label:"Dirección"},
+    {key:"fiscalData", label:"Razon Social"}
   ]
   const endpoint = "branch";
   const section = "administration"

@@ -18,7 +18,7 @@ export default async function ListPage({ searchParams }: ListPageProps) {
   const columns:Columns<SalePoint>[] = [
     {key:"name", label:"Codigo"}, 
     {key:"branch", label:"Sucursal"},
-    {key:"emitionType", label:"Tipo de Emisión"}
+    {key:"emissionType", label:"Tipo de Emisión"}
   ]
   const endpoint = "sale-point";
   const section = "administration"

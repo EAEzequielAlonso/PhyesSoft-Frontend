@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     secure: isProd,
     sameSite: isProd ? 'none' : 'lax',
     path: '/',
-    maxAge: 60 * 60 * 24, // 1 día
+    maxAge: 60 * 60 * 24 * 2, // 2 día
   });
 
   return NextResponse.json({ ok: true });

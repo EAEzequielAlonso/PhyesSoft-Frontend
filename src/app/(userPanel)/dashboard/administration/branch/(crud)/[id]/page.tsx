@@ -1,6 +1,6 @@
 import {CreateForm} from "@/components/dashboard";
 import { Branch, FormCrud } from "@/types";
-import { fetchDataOne } from "@/fetchs/dashboard/crudFechServer";
+import { fetchDataOne, fetchDataRelation } from "@/fetchs/dashboard/crudFechServer";
 
 interface Props {
     params: Promise<{
@@ -15,12 +15,18 @@ export default async function EditBrandPage ({params}: Props) {
     const endpoint = "branch";
     const section = "administration";
     const label = "Sucursal"
-    const formCrud: FormCrud<Branch>[] = [
-        {label: "Nombre", elementForm: "text", key: "name"},
-        {label: "Dirección", elementForm: "text", key: "address"},
-        {label: "Ciudad", elementForm: "text", key: "city"},
-        {label: "Email de Sucursal", elementForm: "email", key: "emailBranch"},
-        {label: "Es La Central", elementForm: "checkbox", key: "central"},
+    const [fiscalData] = await Promise.all ([
+                fetchDataRelation("fiscal-data", "Sucursal"),
+            ])
+        const formCrud: FormCrud<Branch>[] = [
+            {label: "Nombre", elementForm: "text", key: "name"},
+            {label: "Dirección", elementForm: "text", key: "address"},
+            {label: "Ciudad", elementForm: "text", key: "city"},
+            {label: "Telefono", elementForm: "number", key: "phone"},
+            {label: "Email de Sucursal", elementForm: "email", key: "emailBranch"},
+            {label: "Datos Fiscales", elementForm: "select", key: "fiscalDataId", data: fiscalData},
+            {label: "Inicio de Actividad", elementForm: "date", key: "initDate"},
+            {label: "Es La Central", elementForm: "checkbox", key: "central"},
         ]
 
     const data = await fetchDataOne(endpoint, label, brandId)
