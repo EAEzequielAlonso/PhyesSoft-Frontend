@@ -8,6 +8,10 @@ export const fetchGetClient = async (endpoint:string, queryParams = '', label: s
         },
         credentials: 'include'
       });
+
+      if (!response.ok)
+        throw new Error();
+
       const resp = await response.json();
       return resp
   
@@ -27,9 +31,15 @@ export const fetchGetClient = async (endpoint:string, queryParams = '', label: s
         },
         body: JSON.stringify(body),
       });
+      
+      if (!response.ok)
+        throw new Error();
+
       const resp = await response.json();
-      return resp;
+      return resp
+
     } catch (error) {
+      console.log("error: ", error);
       throw new Error(`Error al cargar los datos en ${label}. Error: ${error}`);
     }
   };

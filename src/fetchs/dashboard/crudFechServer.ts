@@ -18,8 +18,12 @@ export const fetchData = async (endpoint: string, label: string, search: string)
       credentials: "include", // muy importante para que se envíen cookies
       cache: "no-store", // opcional, si querés evitar cacheo en server components
     });
+
+    if (!response.ok)
+      throw new Error();
+
     const resp = await response.json();
-    return resp;
+    return resp
   } catch (error) {
     throw new Error(`Error al cargar los datos en ${label}. Error: ${error}`);
   }
@@ -39,8 +43,11 @@ export const fetchDataOne = async (endpoint: string, label: string, relationId: 
         "Content-Type": "application/json",
       },
     });
-    const resp = await response.json();
-    return resp;
+    if (!response.ok)
+        throw new Error();
+
+      const resp = await response.json();
+      return resp
   } catch (error) {
     throw new Error(`Error al cargar los datos en ${label}. Error: ${error}`);
   }
@@ -59,8 +66,11 @@ export const fetchPost = async (endpoint: string, label: string, body: object) =
       },
       body: JSON.stringify(body),
     });
+    if (!response.ok)
+      throw new Error();
+
     const resp = await response.json();
-    return resp;
+    return resp
   } catch (error) {
     throw new Error(`Error al cargar los datos en ${label}. Error: ${error}`);
   }
