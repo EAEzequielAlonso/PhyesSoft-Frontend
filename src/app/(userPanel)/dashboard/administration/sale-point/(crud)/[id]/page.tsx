@@ -1,6 +1,6 @@
 import {CreateForm} from "@/components/dashboard";
 import { FormCrud, SalePoint } from "@/types";
-import { fetchData, fetchDataOne, fetchDataRelation } from "@/fetchs/dashboard/crudFechServer";
+import { fetchData, fetchDataOne } from "@/fetchs/dashboard/crudFechServer";
 
 interface Props {
     params: Promise<{
@@ -15,16 +15,14 @@ export default async function EditBrandPage ({params}: Props) {
     const endpoint = "sale-point";
     const section = "administration";
     const label = "Punto de Venta";
-    const [branch, emissionType] = await Promise.all ([
-        fetchDataRelation("branch", "Sucursal"),
+    const [emissionType] = await Promise.all ([
         fetchData("fiscal-data/emissiontype", "Tipo de emisión", ""),
     ])
 
     const formCrud: FormCrud<SalePoint>[] = [
         {label: "Codigo", elementForm: "text", key: "name"},
         {label: "Descripción", elementForm: "text", key: "description"},
-        {label: "Tipo de Emisión", elementForm: "select", key: "emissionType", data: emissionType},
-        {label: "Sucursal", elementForm: "select", key: "branchId", data: branch}
+        {label: "Tipo de Emisión", elementForm: "select", key: "emissionType", data: emissionType}
     ]
 
     const data = await fetchDataOne(endpoint, label, id)

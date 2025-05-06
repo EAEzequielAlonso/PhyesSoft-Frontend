@@ -2,7 +2,7 @@
 
 import React, { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { FaShop } from "react-icons/fa6";
+import { FaShop, FaRegIdBadge } from "react-icons/fa6";
 import {
   LuShoppingCart,    // Ventas
   LuShoppingBasket,           // Productos
@@ -10,7 +10,10 @@ import {
   LuUser,            // Mi Cuenta
   LuBrainCircuit,    // Inteligencia Artigficial
   LuChartNoAxesCombined, // Balances
-  LuLogOut           // Logout
+  LuLogOut,           // Logout
+  LuUsers,        // Cliente
+
+
 } from "react-icons/lu";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
@@ -97,6 +100,14 @@ export const Sidebar: React.FC = () => {
           active={pathname!.endsWith("/dashboard/sales")}
         />
 
+        {/* <MenuItem
+          href={"/dashboard/clients"}
+          icon={<LuUsers size={20} />}
+          text={"Clientes"}
+          isOpen={isOpen}
+          active={pathname!.endsWith("/dashboard/clients")}
+        /> */}
+
         <MenuItem
           href={"/dashboard/products"}
           icon={<LuShoppingBasket size={20} />}
@@ -112,6 +123,14 @@ export const Sidebar: React.FC = () => {
           isOpen={isOpen}
           active={pathname!.endsWith("/dashboard/administration")}
         />
+
+        {/* <MenuItem
+          href={"/dashboard/employee"}
+          icon={<FaRegIdBadge size={20} />}
+          text={"Empleados"}
+          isOpen={isOpen}
+          active={pathname!.endsWith("/dashboard/employee")}
+        /> */}
 
         <MenuItem
           href={"/dashboard/reports"}

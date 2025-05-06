@@ -46,17 +46,18 @@ export const fetchDataOne = async (endpoint: string, label: string, relationId: 
   }
 };
 
-export const fetchDataRelation = async (endpoint: string, label: string) => {
+export const fetchPost = async (endpoint: string, label: string, body: object) => {
   try {
     const token = (await cookies()).get("token");
     if (!token) redirect("/login");
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${endpoint}/commerce`, {
-      method: "GET",
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${endpoint}`, {
+      method: "POST",
       headers: {
         Authorization: `Bearer ${token.value}`,
         "Content-Type": "application/json",
       },
+      body: JSON.stringify(body),
     });
     const resp = await response.json();
     return resp;

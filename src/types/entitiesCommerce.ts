@@ -1,3 +1,4 @@
+
 export interface Branch {
     id: string;
     name: string;
@@ -7,11 +8,22 @@ export interface Branch {
     emailBranch: string;
     initDate: Date;
     central: boolean;
+    boxesCash?: BoxCash[];
     fiscalData?: FiscalData;
     fiscalDataId?: string;
 }
 
+export interface BoxCash {
+  id: string;
+  name: string; 
+  branch?: Branch; 
+  branchId?: string;
+  salePoint?: SalePoint;
+  salePointId?: string;
+}
+
 export interface Commerce {
+  id:string;
   nameFantasy: string;
   nameCompany: string;
   slogan: string; 
@@ -25,8 +37,7 @@ export interface SalePoint {
     name: string;
     description: string;
     emissionType: string;
-    branch?: Branch;
-    branchId?: string;
+    boxCash?: BoxCash;
 }
 
 export interface FiscalData {

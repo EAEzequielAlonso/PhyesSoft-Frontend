@@ -1,6 +1,5 @@
 "use client"
 
-import { Button } from "@/components/ui/button"; // Asegúrate de importar el componente de Button
 import { motion } from "framer-motion"; // Importamos framer-motion
 
 export function PriceSection() {
@@ -37,9 +36,9 @@ export function PriceSection() {
                 <li>Soporte por email</li>
               </ul>
             </div>
-            <Button className="mt-6 w-full" variant="outline">
+            <button className="mt-6 w-full bg-amber-600">
               Empieza Gratis
-            </Button>
+            </button>
           </motion.div>
 
           {/* Plan Básico */}
@@ -59,9 +58,9 @@ export function PriceSection() {
                 <li>Soporte prioritario</li>
               </ul>
             </div>
-            <Button className="mt-6 w-full" variant="outline">
+            <button className="mt-6 w-full bg-amber-600">
               Contratar Ahora
-            </Button>
+            </button>
           </motion.div>
 
           {/* Plan Pro - Destacado */}
@@ -82,9 +81,9 @@ export function PriceSection() {
                 <li>Reportes avanzados</li>
               </ul>
             </div>
-            <Button className="mt-6 w-full" variant="primary">
+            <button className="mt-6 w-full bg-amber-600">
               Contratar Ahora
-            </Button>
+            </button>
             <p className="mt-4 text-white text-sm italic">¡Mejor relación calidad-precio! Oferta limitada</p>
           </motion.div>
 
@@ -106,9 +105,9 @@ export function PriceSection() {
                 <li>Reportes financieros completos</li>
               </ul>
             </div>
-            <Button className="mt-6 w-full" variant="outline">
+            <button className="mt-6 w-full bg-amber-600">
               Contratar Ahora
-            </Button>
+            </button>
           </motion.div>
         </div>
 

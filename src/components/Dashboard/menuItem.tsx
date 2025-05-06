@@ -13,7 +13,7 @@ interface MenuItemProps {
     return (
       <Link
         href={href}
-        className={`flex items-center gap-3 p-2 rounded transition w-44 ${
+        className={`flex items-center gap-3 px-2 py-1 rounded transition w-[147px] ${
           active ? "bg-blue-600" : "hover:bg-blue-600"
         }`}
       >

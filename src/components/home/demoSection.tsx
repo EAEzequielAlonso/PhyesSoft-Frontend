@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import { UserPlus, Package, BarChart, ShoppingCart, TrendingUp } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 
 export function DemoSection() {
   const steps = [
@@ -74,9 +73,9 @@ export function DemoSection() {
           initial={{ opacity: 0, y: 50 }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <Button className="px-6 py-3 text-lg bg-[#0D47A1] text-white rounded-lg shadow-lg hover:bg-[#08306b] transition">
+          <button className="px-6 py-3 text-lg bg-[#0D47A1] text-white rounded-lg shadow-lg hover:bg-[#08306b] transition">
             Mira una Demo 🔥
-          </Button>
+          </button>
         </motion.div>
       </div>
     </section>

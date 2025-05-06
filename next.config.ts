@@ -6,6 +6,7 @@ module.exports = {
       { protocol: "https", hostname: "rightpeoplegroup.com" },
       { protocol: "https", hostname: "randomuser.me" },
       { protocol: "https", hostname: "images.pexels.com" },
+      { protocol: "https", hostname: "emiralfg.com" },
     ],
   },
 };

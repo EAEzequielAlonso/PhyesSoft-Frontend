@@ -39,7 +39,6 @@ export function CreateForm<T extends { id?: string }>({
             formObject[field.key] = value.toString() as T[keyof T];
           }
       });
-      console.log("esto es lo que envio al seridor: ", formObject)
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}${item ? `/${item.id}` : ""}`,
         {
@@ -58,7 +57,7 @@ export function CreateForm<T extends { id?: string }>({
       showToast(`${label} ${item ? "actualizada" : "creada"} con éxito`, "success");
       if (!varios) route.push(`/dashboard/${section}/${endpoint}`);
     } catch {
-      showToast(`Error al ${item ? "actualizar" : "crear"} ${label}`, "error");
+      showToast(`Error al ${item ? "actualizar" : "crear"} ${label}. No puede asignar el mismo punto de venta a dos cajas distintas`, "error");
     }
   };
 
