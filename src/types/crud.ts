@@ -9,6 +9,11 @@ export interface SelectOption {
    [key:string]: string;
 }
 
+export interface FilterParams {
+   label:string;
+   data: SelectOption[];
+}
+
 export interface FormCrud<T> {
    label: string;
    elementForm: "text" | "number" | "select" | "email" | "checkbox" | "date";
@@ -16,3 +21,4 @@ export interface FormCrud<T> {
    data?: SelectOption[]; 
    relation?: string;
 }
+

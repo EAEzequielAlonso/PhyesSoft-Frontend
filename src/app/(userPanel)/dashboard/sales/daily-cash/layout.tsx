@@ -7,7 +7,9 @@ export default async function ListLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const branches = await fetchData("branch", "Sucursal", "");
+
+    const branches = await fetchData("branch", "Cajas Diarias", "");
+
   return (
     <div>
         <OpenFilterBox branches={branches[0]}/>

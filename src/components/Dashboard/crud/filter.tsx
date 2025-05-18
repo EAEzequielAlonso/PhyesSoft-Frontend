@@ -23,12 +23,12 @@ export function Filter({endpoint}:{endpoint:string}) {
   return (
     <form onSubmit={handleSubmit} className="container-search">
       <input
-        type="text"
-        name="search"
-        placeholder="Buscar por nombre..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+          type="text"
+          name="search"
+          placeholder="Buscar por nombre..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       <button type="submit" className="btn-icon-orange">
         <LuSearch />
       </button>

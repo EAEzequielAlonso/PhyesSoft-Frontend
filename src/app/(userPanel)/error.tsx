@@ -11,7 +11,7 @@ export default function Error({ error, reset }: { error: Error; reset: () => voi
   return (
     <div className="text-center py-10">
       <h2 className="text-red-500 text-lg font-semibold">¡Algo salió mal!</h2>
-      <p className="mb-4">No se pudieron cargar los registros.</p>
+      <p className="mb-4">{error.message}</p>
       <button
         onClick={() => reset()}
         className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"

@@ -3,7 +3,7 @@ const section = "Comercio"
 const navItems = [
     { name: "Comercio", path: "/dashboard/administration/commerce" },
     { name: "Sucursales", path: "/dashboard/administration/branch" },
-    { name: "Usuarios y Roles", path: "/dashboard/administration/user-and-roles" },
+    //{ name: "Usuarios y Roles", path: "/dashboard/administration/user-and-roles" },
     { name: "Puntos de venta", path: "/dashboard/administration/sale-point" },
     { name: "Cajas", path: "/dashboard/administration/box-cash" }, 
     { name: "Datos de Facturación", path: "/dashboard/administration/fiscal-data" },

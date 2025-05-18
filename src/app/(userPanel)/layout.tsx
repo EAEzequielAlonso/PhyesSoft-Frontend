@@ -20,7 +20,7 @@ export default function RootLayout({
         className={`${montserrat.className} antialiased flex`}
       >
         <Sidebar/>
-        <main className= "w-full">
+        <main className= "w-full bg-slate-100">
           <ToastProvider>
             {children}
           </ToastProvider>

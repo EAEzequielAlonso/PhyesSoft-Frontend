@@ -2,6 +2,8 @@ import { BoxCash, FormCrud } from "@/types";
 import {CreateForm} from "@/components";
 import { fetchDataRelation } from "@/fetchs/dashboard/crudFechServer";
 
+export const dynamic = 'force-dynamic';
+
 interface Props {
     searchParams: Promise<{
         createAdd?: boolean

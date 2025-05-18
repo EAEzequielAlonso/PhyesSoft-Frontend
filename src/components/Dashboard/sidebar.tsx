@@ -2,16 +2,19 @@
 
 import React, { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { FaShop, FaRegIdBadge } from "react-icons/fa6";
+import { 
+  FaShop, 
+  //FaRegIdBadge 
+} from "react-icons/fa6";
 import {
   LuShoppingCart,    // Ventas
   LuShoppingBasket,           // Productos
   LuGauge,           // Dashboard
   LuUser,            // Mi Cuenta
-  LuBrainCircuit,    // Inteligencia Artigficial
+ // LuBrainCircuit,    // Inteligencia Artigficial
   LuChartNoAxesCombined, // Balances
   LuLogOut,           // Logout
-  LuUsers,        // Cliente
+  //LuUsers,        // Cliente
 
 
 } from "react-icons/lu";
@@ -140,13 +143,13 @@ export const Sidebar: React.FC = () => {
           active={pathname!.endsWith("/dashboard/reports")}
         />
 
-        <MenuItem
+        {/* <MenuItem
           href={"/dashboard/ia"}
           icon={<LuBrainCircuit size={20} />}
           text={"I. Artifical"}
           isOpen={isOpen}
           active={pathname!.endsWith("/dashboard/ia")}
-        />
+        /> */}
 
         <MenuItem
           href={"/dashboard/mycount"}

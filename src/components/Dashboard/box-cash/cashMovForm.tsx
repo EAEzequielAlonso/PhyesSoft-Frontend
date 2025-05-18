@@ -2,8 +2,9 @@
 
 import { MovementType } from "@/types";
 import { useToast } from "@/context/ToastContext";
-import { FormEvent, useRef } from "react";
+import { FormEvent, useRef} from "react";
 import { fetchPost } from "@/fetchs/dashboard/crudFetchClient";
+
 
 interface Props {
   movType: MovementType[];
@@ -26,23 +27,23 @@ export function CashMovForm({ movType, dailyCashId }: Props) {
       dailyCashId,
     };
 
-    const resp = await fetchPost("cash-movement", "Movimiento de Caja", body);
+    try {
 
-    if (!resp.ok) {
-      showToast("No pudo registrarse el Movimiento de Caja", "error");
-      return;
+      await fetchPost("cash-movement", "Movimiento de Caja", body);
+      showToast("El movimiento de caja se registró con éxito", "success");
+      formRef.current?.reset(); // ✅ Limpieza segura y simple
+
+    } catch {
+
+      showToast("No pudo registrarse el movimiento de caja", "error");
     }
-
-    showToast("El movimiento de caja se registró con éxito", "success");
-
-    formRef.current?.reset(); // ✅ Limpieza segura y simple
   };
 
   return (
     <div className="px-3">
-      <h3 className="text-sm font-semibold text-[#0D47A1] mb-2 font-montserrat">
-        Registrar Movimiento
-      </h3>
+        <h3 className="text-sm font-semibold text-[#0D47A1] mb-2 font-montserrat">
+          Registrar Movimiento
+        </h3>
       <form ref={formRef} onSubmit={handleMovRegister} className="flex flex-col gap-2">
         <select
           name="movType"

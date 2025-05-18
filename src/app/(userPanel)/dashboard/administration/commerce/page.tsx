@@ -2,6 +2,8 @@ import {CreateForm} from "@/components/dashboard";
 import { Commerce, FormCrud } from "@/types";
 import { fetchData } from "@/fetchs/dashboard/crudFechServer";
 
+export const dynamic = 'force-dynamic';
+
 export default async function EditBrandPage () {
 
     // Datos a modificar en cada page

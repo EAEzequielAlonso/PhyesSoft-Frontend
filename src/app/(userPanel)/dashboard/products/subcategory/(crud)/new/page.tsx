@@ -14,7 +14,7 @@ const NewBrand: React.FC<Props> = async ({searchParams}) => {
 
     // Datos a modificar de cada page.
     const endpoint = "subcategory";
-    const section = "prodcuts";
+    const section = "products";
     const endpointRelatin = "category";
     const label = "Subcategoria";
     const dataRelation = await fetchDataRelation(endpointRelatin, label);

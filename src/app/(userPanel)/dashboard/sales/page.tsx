@@ -1,6 +1,11 @@
 "use client";
 
-import { useState, ChangeEvent } from "react";
+import { fetchGetClient } from "@/fetchs/dashboard/crudFetchClient";
+import { useState, useEffect, ChangeEvent } from "react";
+import { useRouter } from "next/navigation";
+import { DailyCash, Product } from "@/types";
+import { useToast } from "@/context/ToastContext";
+import debounce from 'lodash/debounce';
 
 interface ProductSale {
   id: string;
@@ -8,58 +13,114 @@ interface ProductSale {
   size: string;
   color: string;
   unitPrice: number;
-  discount: number; // en porcentaje
+  discount: number;
   quantity: number;
 }
 
 export default function SalesSection() {
-  // Estados para el formulario de ingreso de producto
-  const [productName, setProductName] = useState("");
+const {showToast} = useToast()
+
+  const router = useRouter()
+  // Estados para el producto escaneado
+  const [productAdd, setProductAdd] = useState("");
+  const [productCode, setProductCode] = useState("");
+  const [productSearch, setProductSearch] = useState("");
   const [size, setSize] = useState("");
   const [color, setColor] = useState("");
   const [unitPrice, setUnitPrice] = useState<number>(0);
   const [discount, setDiscount] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(1);
 
-  // Estado para la lista de productos agregados a la venta
+  //Estados Para busqueda de producto
+  const [results, setResults] = useState<Product[]>([]);
+  const [query, setQuery] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  // Estado para sucursal, caja y cotización
+  const [boxes, setBoxes] = useState<DailyCash[]>([]);
+  const [selectedBox, setSelectedBox] = useState<DailyCash | null>(null);
+  //const [dollarRate, setDollarRate] = useState<number>(1215);
+  const dollarRate = 1215;
+
+  // Lista de productos en la venta
   const [saleProducts, setSaleProducts] = useState<ProductSale[]>([]);
 
-  // Estados para datos generales de la venta
-  const subtotal = saleProducts.reduce((sum, prod) => sum + prod.unitPrice, 0);
-  const totalDiscount = saleProducts.reduce((sum, prod) => {
-    const discAmount = (prod.unitPrice * prod.discount) / 100;
-    return sum + discAmount;
-  }, 0);
+  // Totales
+  const subtotal = saleProducts.reduce((sum, prod) => sum + prod.unitPrice * prod.quantity, 0);
+  const totalDiscount = saleProducts.reduce(
+    (sum, prod) => sum + (prod.unitPrice * prod.discount / 100) * prod.quantity,
+    0
+  );
   const total = subtotal - totalDiscount;
 
-  // Estados para el pago
+  // Pago
   const [paymentMethod, setPaymentMethod] = useState("Efectivo");
   const [amountReceived, setAmountReceived] = useState<number>(0);
   const change = paymentMethod === "Efectivo" ? Math.max(amountReceived - total, 0) : 0;
 
-  // Función para agregar un producto
-  const addProduct = () => {
-    if (
-      !productName.trim() ||
-      !size.trim() ||
-      !color.trim() ||
-      unitPrice <= 0 ||
-      quantity <= 0
-    )
-      return;
+  // carga inicial de campos
+  useEffect(() => {
+    const loadBoxes = async () => {
+      try {
+        const resp: DailyCash[] = await fetchGetClient(
+          "daily-cash/open-daily-cash",
+          "",
+          "Caja Diaria"
+        );
 
+        if (resp.length === 0) {
+          showToast("No Hay ninguna caja abierta aún. Abra una caja para comenzar a vender","warning")
+          router.push("/dashboard/sales/daily-cash");
+        } else {
+          console.log ("esta es la resp: ", resp)
+          setBoxes(resp);
+        }
+      } catch (error) {
+        console.error("No se pudieron cargar las cajas diarias:", error);
+      }
+    };
+
+    loadBoxes();
+  }, []);
+
+  const fetchResults = debounce(async (term: string) => {
+    if (!term) return setResults([]);
+
+    setLoading(true);
+    try {
+      const res = await fetchGetClient("product", `search=${term}`, "Producto");
+      console.log("res: ", res[0])
+      setResults(res[0]); // máx 10 sugerencias
+    } catch (err) {
+      console.error('Error fetching products', err);
+    } finally {
+      setLoading(false);
+    }
+  }, 300); // 300ms debounce
+
+  useEffect(() => {
+    fetchResults(query);
+  }, [query]);
+
+  // Manejadores
+  const handleUnitPriceChange = (e: ChangeEvent<HTMLInputElement>) => setUnitPrice(Number(e.target.value));
+  const handleDiscountChange = (e: ChangeEvent<HTMLInputElement>) => setDiscount(Number(e.target.value));
+  const handleQuantityChange = (e: ChangeEvent<HTMLInputElement>) => setQuantity(Number(e.target.value));
+
+  const addProduct = () => {
+    if (!productSearch || unitPrice <= 0 || quantity <= 0) return;
     const newProduct: ProductSale = {
       id: crypto.randomUUID(),
-      productName: productName.trim(),
-      size: size.trim(),
-      color: color.trim(),
+      productName: productSearch,
+      size,
+      color,
       unitPrice,
       discount,
       quantity,
     };
-    setSaleProducts([...saleProducts, newProduct]);
-    // Limpiar campos
-    setProductName("");
+    setSaleProducts((prev) => [...prev, newProduct]);
+    setProductCode("");
+    setProductSearch("");
     setSize("");
     setColor("");
     setUnitPrice(0);
@@ -67,139 +128,137 @@ export default function SalesSection() {
     setQuantity(1);
   };
 
-  // Manejo de inputs numéricos
-  const handleUnitPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setUnitPrice(Number(e.target.value));
-  };
-  const handleDiscountChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setDiscount(Number(e.target.value));
-  };
-  const handleQuantityChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setQuantity(Number(e.target.value));
-  };
+const handleOnChangeBox = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const selectedId = e.target.value;
+  const box = boxes.find((bx) => bx.id === selectedId) || null;
+  setSelectedBox(box);
+};
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5] p-1 font-roboto text-xs">
-      {/* Formulario para agregar producto */}
-<div className="bg-white p-4 rounded-xl shadow-md mb-4">
-  <div className="flex flex-col md:flex-row flex-wrap gap-4">
-    
-    {/* PRODUCTO */}
-    <div className="relative flex-1 min-w-[180px]">
-      <input
-        type="text"
-        name="productName"
-        value={productName}
-        onChange={(e) => setProductName(e.target.value)}
-        placeholder=" "
-        className="peer w-full border border-gray-300 px-3 py-2 rounded text-sm"
-      />
-      <label className="absolute left-3 top-1 text-xs text-[#0D47A1] bg-white px-1 font-montserrat pointer-events-none transition-all rounded-sm peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-sm peer-focus:-top-1.5 peer-focus:text-xs">
-        Producto
-      </label>
-    </div>
+    <div className="min-h-screen font-roboto p-2 text-sm bg-gray-50">
+      {/* CABECERA */}
+      <div className="bg-white p-2 rounded-2xl shadow-md mb-6 flex flex-col md:flex-row items-center gap-4">
+        {/* Buscador de Productos */}
+        <div className="relative w-full">
+          <input
+            type="text"
+            className="border p-2 w-full"
+            placeholder="Buscar producto..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        {loading && <div className="text-sm text-gray-500">Buscando...</div>}
+        {results.length > 0 && (
+          <ul className="absolute bg-white border w-full max-h-60 overflow-y-auto z-10 text-gray-700">
+            {results.map((product) => (
+              <li
+                key={product.id}
+                className="p-2 hover:bg-gray-100 cursor-pointer"
+                onClick={() => {
+                  onSelect(product);
+                  setQuery('');
+                  setResults([]);
+                }}
+              >
+                {product.name} - $ {product.price}
+              </li>
+            ))}
+          </ul>
+          )}
+         </div>
+        {/* Caja */}
+        <select
+          value={selectedBox?.id ?? ""}
+          onChange={handleOnChangeBox}
+          className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none">
+          {boxes.map((bx) => (
+            <option key={bx.id} value={bx.id}>
+              {bx.boxCash.name} - {bx.boxCash.branch?.name}
+            </option>
+          ))}
+        </select>
 
-    {/* TALLE */}
-    <div className="relative flex-1 min-w-[120px]">
-      <input
-        type="text"
-        name="size"
-        value={size}
-        onChange={(e) => setSize(e.target.value)}
-        placeholder=" "
-        className="peer w-full border border-gray-300 px-3 pt-3 pb-1 rounded text-sm"
-      />
-      <label className="absolute left-3 top-1 text-xs text-[#0D47A1] bg-white px-1 font-montserrat pointer-events-none transition-all rounded-sm shadow-sm peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-sm peer-focus:top-1 peer-focus:text-xs">
-        Talle
-      </label>
-    </div>
+        {/* Cotización dólar */}
+        <div className="text-blue-600 font-medium">
+          Dólar: ${dollarRate.toFixed(2)}
+        </div>
+      </div>
 
-    {/* COLOR */}
-    <div className="relative flex-1 min-w-[120px]">
-      <input
-        type="text"
-        name="color"
-        value={color}
-        onChange={(e) => setColor(e.target.value)}
-        placeholder=" "
-        className="peer w-full border border-gray-300 px-3 pt-3 pb-1 rounded text-sm"
-      />
-      <label className="absolute left-3 top-1 text-xs text-[#0D47A1] bg-white px-1 font-montserrat pointer-events-none transition-all rounded-sm shadow-sm peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-sm peer-focus:top-1 peer-focus:text-xs">
-        Color
-      </label>
-    </div>
+      {/* FORMULARIO AGREGAR PRODUCTO */}
+      <div className="bg-white p-4 rounded-2xl shadow-md mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
+          {/* Producto */}
+          <input
+            type="text"
+            value={productSearch}
+            onChange={(e) => setProductSearch(e.target.value)}
+            placeholder="Producto"
+            className="col-span-2 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none"
+          />
+          {/* Talle */}
+          <input
+            type="text"
+            value={size}
+            onChange={(e) => setSize(e.target.value)}
+            placeholder="Talle"
+            className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none"
+          />
+          {/* Color */}
+          <input
+            type="text"
+            value={color}
+            onChange={(e) => setColor(e.target.value)}
+            placeholder="Color"
+            className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none"
+          />
+          {/* Precio */}
+          <input
+            type="number"
+            value={unitPrice || ""}
+            onChange={handleUnitPriceChange}
+            placeholder="Precio ARS"
+            className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none"
+          />
+          {/* Descuento */}
+          <input
+            type="number"
+            value={discount || ""}
+            onChange={handleDiscountChange}
+            placeholder="Descuento %"
+            className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none"
+          />
+          {/* Cantidad y botón */}
+          <div className="flex gap-2 col-span-2">
+            <input
+              type="number"
+              value={quantity}
+              onChange={handleQuantityChange}
+              placeholder="Cantidad"
+              className="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none"
+            />
+            <button
+              onClick={addProduct}
+              className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition"
+            >
+              Agregar
+            </button>
+          </div>
+        </div>
+      </div>
 
-    {/* PRECIO */}
-    <div className="relative flex-1 min-w-[120px]">
-      <input
-        type="number"
-        name="unitPrice"
-        value={unitPrice === 0 ? "" : unitPrice}
-        onChange={handleUnitPriceChange}
-        placeholder=" "
-        className="peer w-full border border-gray-300 px-3 pt-3 pb-1 rounded text-sm"
-      />
-      <label className="absolute left-3 top-1 text-xs text-[#0D47A1] bg-white px-1 font-montserrat pointer-events-none transition-all rounded-sm shadow-sm peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-sm peer-focus:top-1 peer-focus:text-xs">
-        Precio (ARS)
-      </label>
-    </div>
-
-    {/* DESCUENTO */}
-    <div className="relative flex-1 min-w-[120px]">
-      <input
-        type="number"
-        name="discount"
-        value={discount === 0 ? "" : discount}
-        onChange={handleDiscountChange}
-        placeholder=" "
-        className="peer w-full border border-gray-300 px-3 pt-3 pb-1 rounded text-sm"
-      />
-      <label className="absolute left-3 top-1 text-xs text-[#0D47A1] bg-white px-1 font-montserrat pointer-events-none transition-all rounded-sm shadow-sm peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-sm peer-focus:top-1 peer-focus:text-xs">
-        Descuento (%)
-      </label>
-    </div>
-
-    {/* CANTIDAD */}
-    <div className="relative flex-1 min-w-[120px]">
-      <input
-        type="number"
-        name="quantity"
-        value={quantity}
-        onChange={handleQuantityChange}
-        placeholder=" "
-        className="peer w-full border border-gray-300 px-3 pt-3 pb-1 rounded text-sm"
-      />
-      <label className="absolute left-3 top-1 text-xs text-[#0D47A1] bg-white px-1 font-montserrat pointer-events-none transition-all rounded-sm shadow-sm peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-sm peer-focus:top-1 peer-focus:text-xs">
-        Cantidad
-      </label>
-    </div>
-
-    {/* BOTÓN */}
-    <div className="flex items-end">
-      <button
-        onClick={addProduct}
-        className="bg-[#FF9800] hover:bg-[#fb8c00] transition-colors text-white px-4 py-2 rounded font-montserrat text-sm"
-      >
-        Agregar Producto
-      </button>
-    </div>
-  </div>
-</div>
-
-
-      {/* CONTENIDO INFERIOR: tabla (2/3) y totales+pago (1/3) */}
-      <div className="flex flex-col md:flex-row gap-2">
-        {/* TABLA - 2/3 */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-2 md:w-2/3">
+      {/* TABLA Y RESUMEN */}
+      <div className="flex flex-col md:flex-row gap-6">
+        {/* Tabla */}
+        <div className="bg-white p-4 rounded-2xl shadow-md flex-1">
           {saleProducts.length > 0 ? (
-            <table className="min-w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b text-sm">
-                  <th className="py-2 px-4 text-[#0D47A1]">Descripción</th>
-                  <th className="py-2 px-4 text-[#0D47A1]">Precio</th>
-                  <th className="py-2 px-4 text-[#0D47A1]">Cantidad</th>
-                  <th className="py-2 px-4 text-[#0D47A1]">Desc. (%)</th>
-                  <th className="py-2 px-4 text-[#0D47A1]">Total</th>
+            <table className="w-full text-left">
+              <thead className="border-b">
+                <tr>
+                  <th className="py-2">Descripción</th>
+                  <th className="py-2">Precio</th>
+                  <th className="py-2">Cant.</th>
+                  <th className="py-2">Desc.</th>
+                  <th className="py-2">Total</th>
                 </tr>
               </thead>
               <tbody>
@@ -207,101 +266,64 @@ export default function SalesSection() {
                   const discAmount = (prod.unitPrice * prod.discount) / 100;
                   const finalPrice = prod.unitPrice - discAmount;
                   return (
-                    <tr key={prod.id} className="border-b hover:bg-gray-100">
-                      <td className="py-2 px-4 text-[#424242]">
-                        {prod.productName} - Talle {prod.size} - Color {prod.color}
-                      </td>
-                      <td className="py-2 px-4 text-[#424242]">
-                        ${prod.unitPrice.toFixed(2)}
-                      </td>
-                      <td className="py-2 px-4 text-[#424242]">{prod.quantity}</td>
-                      <td className="py-2 px-4 text-[#424242]">{prod.discount}%</td>
-                      <td className="py-2 px-4 text-[#424242]">
-                        ${(finalPrice * prod.quantity).toFixed(2)}
-                      </td>
+                    <tr key={prod.id} className="border-b hover:bg-gray-50">
+                      <td className="py-2">{prod.productName}</td>
+                      <td className="py-2">${prod.unitPrice.toFixed(2)}</td>
+                      <td className="py-2">{prod.quantity}</td>
+                      <td className="py-2">{prod.discount}%</td>
+                      <td className="py-2">${(finalPrice * prod.quantity).toFixed(2)}</td>
                     </tr>
                   );
                 })}
               </tbody>
             </table>
           ) : (
-            <p className="text-gray-600">No hay productos agregados a la venta.</p>
+            <p className="text-gray-500">No hay productos agregados.</p>
           )}
         </div>
 
-        {/* TOTALES Y PAGO - 1/3 */}
-        <div className="flex flex-col md:w-1/3 gap-2">
-          {/* Resumen General de la Venta */}
-          <div className="bg-white p-6 rounded-lg shadow-md mb-2">
-            <h2 className="text-xl font-semibold text-[#1976D2] mb-4 font-montserrat">
-              Datos Generales de la Venta
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex justify-between border-b pb-2">
-                <span className="text-[#424242] font-montserrat">Subtotal:</span>
-                <span className="text-[#424242]">${subtotal.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between border-b pb-2">
-                <span className="text-[#424242] font-montserrat">Descuento Total:</span>
-                <span className="text-[#424242]">-${totalDiscount.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between font-bold text-xl mt-2">
-                <span className="text-[#0D47A1] font-montserrat">Total:</span>
-                <span className="text-[#0D47A1]">${total.toFixed(2)}</span>
-              </div>
+        {/* Resumen y Pago */}
+        <div className="w-full md:w-1/3 flex flex-col gap-4">
+          <div className="bg-white p-4 rounded-2xl shadow-md">
+            <h2 className="text-lg font-semibold mb-2">Resumen de Venta</h2>
+            <div className="flex justify-between mb-1">
+              <span>Subtotal</span>
+              <span>${subtotal.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between mb-1">
+              <span>Desc. Total</span>
+              <span>-${totalDiscount.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between font-bold text-xl mt-2">
+              <span>Total</span>
+              <span>${total.toFixed(2)}</span>
             </div>
           </div>
-
-          {/* Sección de pago y registro de venta */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold text-[#1976D2] mb-4 font-montserrat">
-              Registrar Venta
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-              <div>
-                <label className="block mb-1 text-[#0D47A1] font-montserrat">
-                  Forma de Pago
-                </label>
-                <select
-                  value={paymentMethod}
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                  className="border border-gray-300 p-2 rounded w-full"
-                >
-                  <option value="Efectivo">Efectivo</option>
-                  <option value="Tarjeta">Tarjeta</option>
-                  <option value="Transferencia">Transferencia</option>
-                </select>
-              </div>
-              <div>
-                <label className="block mb-1 text-[#0D47A1] font-montserrat">
-                  Monto Abonado
-                </label>
-                <input
-                  type="number"
-                  placeholder="Monto abonado"
-                  value={amountReceived === 0 ? "" : amountReceived}
-                  onChange={(e) => setAmountReceived(Number(e.target.value))}
-                  className="border border-gray-300 p-2 rounded w-full"
-                />
-              </div>
-              {paymentMethod === "Efectivo" && (
-                <div className="flex flex-col">
-                  <label className="block mb-1 text-[#0D47A1] font-montserrat">
-                    Cambio
-                  </label>
-                  <input
-                    type="text"
-                    readOnly
-                    value={`$${change.toFixed(2)}`}
-                    className="border border-gray-300 p-2 rounded w-full bg-gray-100"
-                  />
-                </div>
-              )}
-            </div>
-            <button
-              onClick={() => alert("Venta registrada")}
-              className="bg-[#FF9800] text-white px-4 py-2 rounded font-montserrat w-full"
+          <div className="bg-white p-4 rounded-2xl shadow-md">
+            <h2 className="text-lg font-semibold mb-2">Registrar Pago</h2>
+            <select
+              value={paymentMethod}
+              onChange={(e) => setPaymentMethod(e.target.value)}
+              className="w-full border py-2 px-3 rounded-lg mb-3 focus:outline-none"
             >
+              <option>Efectivo</option>
+              <option>Tarjeta</option>
+              <option>Transferencia</option>
+            </select>
+            <input
+              type="number"
+              placeholder="Monto Recibido"
+              value={amountReceived || ""}
+              onChange={(e) => setAmountReceived(Number(e.target.value))}
+              className="w-full border py-2 px-3 rounded-lg mb-3 focus:outline-none"
+            />
+            {paymentMethod === "Efectivo" && (
+              <div className="flex justify-between mb-3">
+                <span>Cambio</span>
+                <span>${change.toFixed(2)}</span>
+              </div>
+            )}
+            <button className="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg transition">
               Registrar Venta
             </button>
           </div>

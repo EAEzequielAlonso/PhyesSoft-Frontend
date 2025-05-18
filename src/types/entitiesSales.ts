@@ -13,6 +13,7 @@ export interface MovementType {
 }
 
 export interface CashMovement {
+    id:string;
     amount: number;
     description: string;
     dailyCash: DailyCash;
@@ -40,4 +41,14 @@ export interface DailyCash {
     userIdOpen?: string;
     boxCash: BoxCash;
     boxCashId:string;
+}
+
+export interface saleProduct {
+    id: string;
+    productIs: string;
+    sizeId?:string;
+    colorId?: string;
+    price:number;
+    discount: number;
+    quantity: number;
 }

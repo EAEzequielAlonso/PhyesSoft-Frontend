@@ -2,19 +2,15 @@
 
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
-import { Branch } from "@/types";
 import { useToast } from "@/context/ToastContext";
+import { BoxCash, Branch } from "@/types";
 
-interface Props {
-  branches: Branch[];
-}
-
-export function OpenFilterBox({ branches }: Props) {
+export function OpenFilterBox({branches} : {branches:Branch[]}) {
   const router = useRouter();
   const { showToast } = useToast();
   const singleBranch = branches.length === 1 ? branches[0] : null;
   const [selectedBranchId, setSelectedBranchId] = useState(singleBranch?.id || "");
-  const selectedBranch = branches.find((b) => b.id === selectedBranchId);
+  const selectedBranch = branches.find((b:Branch) => b.id === selectedBranchId);
 
   const boxOptions = selectedBranch?.boxesCash ? selectedBranch.boxesCash : [];
   const singleBox = boxOptions.length === 1 ? boxOptions[0] : null;
@@ -77,7 +73,7 @@ export function OpenFilterBox({ branches }: Props) {
             className="w-full border border-gray-300 px-3 py-2 rounded text-sm"
           >
             <option value="" disabled>Seleccionar Sucursal</option>
-            {branches.map((b) => (
+            {branches.map((b:Branch) => (
               <option key={b.id} value={b.id}>{b.name}</option>
             ))}
           </select>
@@ -96,7 +92,7 @@ export function OpenFilterBox({ branches }: Props) {
             disabled={!selectedBranch}
           >
             <option value="" disabled>Seleccionar Caja</option>
-            {boxOptions.map((box) => (
+            {boxOptions.map((box:BoxCash) => (
               <option key={box.id} value={box.id}>{box.name}</option>
             ))}
           </select>

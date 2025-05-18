@@ -8,11 +8,12 @@ interface Props<T>  {
     data: T[],
     endpoint:string,
     section: string,
-    label:string
-    columns: Columns<T>[]
+    label:string,
+    columns: Columns<T>[],
+    canEdit?: boolean,
 }
   
-export function Table<T extends {id:string}> ({data, endpoint, section, label, columns}: Props<T>) {
+export function Table<T extends {id:string}> ({data, endpoint, section, label, columns, canEdit = true}: Props<T>) {
 
   const isValidArray = Array.isArray(data) && data.length > 0;
 
@@ -63,9 +64,11 @@ export function Table<T extends {id:string}> ({data, endpoint, section, label, c
                     })}
 
                   <td className="text-center">
+                  {canEdit &&
                   <Link href={`/dashboard/${section}/${endpoint}/${dat.id}`}>
                      <button className="btn-text-green mx-2 my-1"><LuPencil /></button>
                   </Link>  
+                  }
                   <ButtonDelete id={dat.id} endpoint={endpoint} label={label} />
                   </td>
                 </tr>
