@@ -38,24 +38,74 @@ export interface Color {
     sizetypeId: string;
     sizetype?: Brand;
   }
-  
+
+  export interface Variant {
+    id: string;
+    name: string;
+  }
+
+  export interface ValueVariant {
+    id: string;
+    name: string;
+    variantId: string;
+    variant?: Variant;
+  }
+
+  export interface ProductType {
+    id: string;
+    name: string;
+  }
+
+  export interface Iva {
+    id: string;
+    name: string;
+    alicuota: number;
+  }
+
+  export interface Provider {
+    id: string;
+    name: string;
+  }
+
   export interface Product {
     id: string;
     name: string;
-    description: string;
+    description?: string;
+    code?: string;
+    image?: string;
+
+    buyUnit: number;
+    saleUnit: number;
     cost: number;
     profit: number;
     price: number;
-    createdAt: Date;
-    endDate?: Date;
-    category: Category;
-    categoryId: string;
-    subcategory: Subcategory;
-    subcategoryId: string;
-    brand: Brand;
-    brandId: string;
-    model: Model;
-    modelId: string;
-    sizetype: SizeType;
-    sizetypeId: string;
+
+    isActive: boolean;
+    hasColor: boolean;
+    isPackComp: boolean;
+    isSellable: boolean;
+    isBuyable: boolean;
+    isInsumo: boolean;
+    isRawMaterial: boolean;
+
+    category?: Category;
+    categoryId?: string;
+    subcategory?: Subcategory;
+    subcategoryId?: string;
+    brand?: Brand;
+    brandId?: string;
+    model?: Model;
+    modelId?: string;
+    sizetype?: SizeType;
+    sizetypeId?: string;
+    variant?: Variant;
+    variantId?: string;
+    producttype?: ProductType;
+    producttypeId?: string;
+    ivaBuy?: Iva;
+    ivaBuyId?: string;
+    ivaSale?: Iva;
+    ivaSaleId?: string;
+    provider?: Provider;
+    providerId?: string;
   }

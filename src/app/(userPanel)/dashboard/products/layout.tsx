@@ -4,6 +4,8 @@ const navItems = [
     { name: "Productos", path: "/dashboard/products/product" },
     { name: "Categoría", path: "/dashboard/products/category" },
     { name: "Subcategoría", path: "/dashboard/products/subcategory" },
+    { name: "Variante", path: "/dashboard/products/variant" },
+    { name: "Valores de Variantes", path: "/dashboard/products/value-variant" },
     { name: "Marca", path: "/dashboard/products/brand" },
     { name: "Modelo", path: "/dashboard/products/model" },
     { name: "Grupo de Talles", path: "/dashboard/products/sizetype" },

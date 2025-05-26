@@ -16,9 +16,10 @@ export interface FilterParams {
 
 export interface FormCrud<T> {
    label: string;
-   elementForm: "text" | "number" | "select" | "email" | "checkbox" | "date";
+   elementForm: "text" | "number" | "select" | "email" | "checkbox" | "date" | "container";
    key: keyof T;
    data?: SelectOption[]; 
    relation?: string;
+   defaultValue?: string | boolean | Date;
 }
 

@@ -11,6 +11,7 @@ import {
   LuShoppingBasket,           // Productos
   LuGauge,           // Dashboard
   LuUser,            // Mi Cuenta
+  LuSettings ,       // Ajustes
  // LuBrainCircuit,    // Inteligencia Artigficial
   LuChartNoAxesCombined, // Balances
   LuLogOut,           // Logout
@@ -141,6 +142,14 @@ export const Sidebar: React.FC = () => {
           text={"Reportes"}
           isOpen={isOpen}
           active={pathname!.endsWith("/dashboard/reports")}
+        />
+
+        <MenuItem
+          href={"/dashboard/settings"}
+          icon={<LuSettings size={20} />}
+          text={"Ajustes"}
+          isOpen={isOpen}
+          active={pathname!.endsWith("/dashboard/settings")}
         />
 
         {/* <MenuItem

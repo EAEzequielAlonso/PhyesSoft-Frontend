@@ -8,11 +8,13 @@ export const fetchGetClient = async (endpoint:string, queryParams = '', label: s
         },
         credentials: 'include'
       });
-
+      const resp = await response.json();
+      console.log("respuesta IVA: " , resp)
       if (!response.ok)
         throw new Error();
 
-      const resp = await response.json();
+      
+      
       return resp
   
     } catch (error) {
@@ -32,10 +34,13 @@ export const fetchGetClient = async (endpoint:string, queryParams = '', label: s
         body: JSON.stringify(body),
       });
       
+      const resp = await response.json();
+      console.log("Respuesta del Post: ", resp)
+
       if (!response.ok)
         throw new Error();
 
-      const resp = await response.json();
+      
       return resp
 
     } catch (error) {
