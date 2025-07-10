@@ -1,7 +1,7 @@
 import {SubNavbar} from "../../../../components/dashboard";
 const section = "Ventas"
 const navItems = [
-    { name: "Ventas", path: "/dashboard/sales" },
+    { name: "Ventas", path: "/dashboard/sales/sale" },
     { name: "Caja Diaria", path: "/dashboard/sales/daily-cash" },
     { name: "Formas de Pago", path: "/dashboard/sales/payment-method" },
     { name: "Tipos de Movimientos", path: "/dashboard/sales/movement-type" }

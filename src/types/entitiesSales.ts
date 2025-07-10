@@ -52,3 +52,19 @@ export interface saleProduct {
     discount: number;
     quantity: number;
 }
+
+export interface Sale {
+  id: string;
+  numSale: number;
+  date: Date;
+  subtotal: number;
+  discount: number;
+  total: number;
+  createdUser?: User;
+  createdUserId?: string;
+  userSale?: User;
+  userSaleId?: string;
+  dailyCash?: DailyCash;
+  dailyCashId?: string;
+  payrollCommissionId?: string;
+}   

@@ -24,7 +24,7 @@ export const fetchData = async (endpoint: string, label: string, search: string)
     });
 
     const resp = await response.json();
-    
+    console.log("resp: ", resp)
     if (!response.ok)
       throw new Error(`${resp.status} - ${resp.error}`);
 

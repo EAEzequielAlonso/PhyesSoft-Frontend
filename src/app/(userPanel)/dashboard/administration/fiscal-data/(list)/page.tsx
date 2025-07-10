@@ -16,9 +16,9 @@ export default async function ListPage({ searchParams }: ListPageProps) {
 
   // datos Particulares de cada uno
   const columns:Columns<FiscalData>[] = [
-    {key:"name", label:"Razon Social"}, 
-    {key:"cuit", label:"CUIT"},
-    {key:"conditionIva", label:"Cond. IVA"}
+    {key:"name", label:"Razon Social", type: "text"}, 
+    {key:"cuit", label:"CUIT", type: "text"},
+    {key:"conditionIva", label:"Cond. IVA", type: "text"}
   ]
   const endpoint = "fiscal-data";
   const section = "administration"

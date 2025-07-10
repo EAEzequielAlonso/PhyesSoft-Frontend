@@ -16,9 +16,9 @@ export default async function ListPage({ searchParams }: ListPageProps) {
 
   // datos Particulares de cada uno
   const columns:Columns<BoxCash>[] = [
-    {key:"name", label:"Nombre"}, 
-    {key:"branch", label:"Sucursal"},
-    {key:"salePoint", label:"Punto de Venta"}, 
+    {key:"name", label:"Nombre", type: "text"}, 
+    {key:"branch", label:"Sucursal", type: "object"},
+    {key:"salePoint", label:"Punto de Venta", type: "object"}, 
   ]
   const endpoint = "box-cash";
   const section = "administration"

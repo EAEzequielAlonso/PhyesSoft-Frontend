@@ -12,9 +12,10 @@ export const Pagination: React.FC<Props> = ({ page, totalPages, endpoint }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const search = searchParams.get("search") || "";
+  const productId = searchParams.get("id") || "";
 
   const handlePageChange = (newPage: number) => {
-    router.push(`/dashboard/products/${endpoint}?search=${encodeURIComponent(search)}&page=${newPage}`);
+    router.push(`/dashboard/products/${endpoint}?id=${productId}&search=${encodeURIComponent(search)}&page=${newPage}`);
   };
 
   return (

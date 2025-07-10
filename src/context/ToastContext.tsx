@@ -47,7 +47,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      <Toaster position="top-right" />
+      <Toaster position="bottom-right" />
     </ToastContext.Provider>
   );
 }

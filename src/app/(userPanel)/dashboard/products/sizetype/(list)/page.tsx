@@ -16,7 +16,7 @@ export default async function ListPage({ searchParams }: ListPageProps) {
   const {search = "", page = "1"} = await searchParams;
 
   // datos Particulares de cada uno
-  const columns:Columns<SizeType>[] = [{key:"name", label:"Nombre"}]
+  const columns:Columns<SizeType>[] = [{key:"name", label:"Nombre", type: "text"}]
   const endpoint = "sizetype";
   const section = "products"
   const label = "Grupo de Talles"

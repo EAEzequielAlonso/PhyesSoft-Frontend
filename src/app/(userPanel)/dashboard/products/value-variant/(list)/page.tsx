@@ -16,7 +16,9 @@ export default async function ListPage({ searchParams }: ListPageProps) {
   const {search = "", page = "1"} = await searchParams;
 
   // datos Particulares de cada uno
-  const columns:Columns<ValueVariant>[] = [{key:"name", label:"Nombre"}, {key:"variant", label:"Variante"}]
+  const columns:Columns<ValueVariant>[] = [
+    {key:"name", label:"Nombre", type: "text"}, 
+    {key:"variant", label:"Variante", type: "object"}]
   const endpoint = "value-variant";
   const section = "products"
   const label = "Valor de Variantes"

@@ -1,7 +1,17 @@
 export interface Columns<T> {
    key: keyof T;
    label: string;
+   type?: "price" | "porcent" | "text" | "boolean" | "object" | "date"; 
 }
+
+export interface ButtonAction<T> {
+   href: string;
+   nameParam?: keyof T;
+   icon: React.ReactElement;
+   color: "blue" | "orange" | "red" | "green";
+   title: string;
+   type?: 'product' 
+} 
 
 export interface SelectOption {
    id: string;
@@ -20,6 +30,9 @@ export interface FormCrud<T> {
    key: keyof T;
    data?: SelectOption[]; 
    relation?: string;
-   defaultValue?: string | boolean | Date;
+   defaultValue?: string | boolean | Date | number;
+   required?:boolean;
+   placeholder?: string;
+   atributeDisplay?: [string, string];
 }
 

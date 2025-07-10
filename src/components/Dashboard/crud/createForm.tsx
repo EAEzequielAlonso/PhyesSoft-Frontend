@@ -43,15 +43,32 @@ export function CreateForm<T extends { id?: string }>({
   try {
     const formObject: Partial<T> = {};
     formCrud.forEach((field) => {
-      const value = formData.get(field.key as string);
+        const rawValue = formData.get(field.key as string);
 
-      if (field.elementForm === "checkbox") {
-        formObject[field.key] = (value === "on") as T[keyof T];
-      } else if (value !== null ) {
-        formObject[field.key] = value.toString() as T[keyof T];
-      }
+        let value: unknown = rawValue;
+
+        if (field.elementForm === "checkbox") {
+          value = rawValue === "on";
+        } else { 
+          if (field.elementForm === "select") {
+          const stringValue = rawValue?.toString();
+
+          // ⚠️ Este es el punto clave:
+          value = stringValue === "" ? null : stringValue;
+          } else {
+            if (field.elementForm === "number") {
+              const stringValue = rawValue?.toString();
+
+              // ⚠️ Este es el punto clave:
+              value = stringValue === "" ? 0 : stringValue;
+              }
+
+          }
+        }
+
+        formObject[field.key] = value as T[keyof T];
     });
-
+    console.log("este es el objeto que estoy mandando: ", formObject)
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}${item ? `/${item.id}` : ""}`,
       {
@@ -63,10 +80,10 @@ export function CreateForm<T extends { id?: string }>({
     );
 
     const resp = await response.json();
-      console.log("Respuesta del Post: ", resp)
+    console.log("imprimo la respuesta: ", resp)
 
     if (!response.ok) {
-      throw new Error();
+      throw new Error(JSON.stringify(resp));
     }
 
     showToast(`${label} ${item ? "actualizada" : "creada"} con éxito`, "success");
@@ -99,7 +116,8 @@ export function CreateForm<T extends { id?: string }>({
       }, 0);
     }
 
-  } catch {
+  } catch (error) {
+    console.error("ERROR: ", error)
     showToast(
       `Error al ${item ? "actualizar" : "crear"} ${label}. Intente nuevamente mas tarde`,
       "error"
@@ -109,7 +127,12 @@ export function CreateForm<T extends { id?: string }>({
 
   const handleOnChange = async (field: FormCrud<T>, value: string) => {
     if (!field.relation) return;
-
+    if (value === "") {
+      setDynamicOptions(() => ({
+        [field.relation as string]: [],
+      }));
+      return
+    }
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/${field.relation.replace(/Id$/, "")}/${String(field.key).replace(/Id$/, "")}/${value}`,
@@ -124,6 +147,9 @@ export function CreateForm<T extends { id?: string }>({
       console.error("Error cargando datos relacionados:", error);
     }
   };
+
+  const getNestedValue = (obj: any, path: string): any =>
+    path.split('.').reduce((acc, part) => acc?.[part], obj);
 
   return (
     <form ref={formRef} onSubmit={handleSubmit} className="text-sm">
@@ -145,14 +171,17 @@ export function CreateForm<T extends { id?: string }>({
               {field.elementForm === "select" ? (
                 <select
                   name={field.key as string}
-                  defaultValue={String(item?.[field.key] ?? null)}
+                  defaultValue={item ? String(item?.[field.key] ?? null) : String(field.defaultValue ? field.defaultValue : null)}
                   onChange={(e) => handleOnChange(field, e.target.value)}
                   className="w-full border border-gray-300 rounded p-1"
                 >
-                  <option value="">Seleccione una opción</option>
+                  <option value="">{field.placeholder ?? "Seleccione una opción"}</option>
                   {(dynamicOptions[field.key as string] ?? field.data)?.map((option) => (
                     <option key={option.id} value={option.id}>
-                      {option.name}
+                      {field.atributeDisplay
+                          ? `${getNestedValue(option, field.atributeDisplay[0])} - 
+                             ${getNestedValue(option, field.atributeDisplay[1])}`
+                          : option.name}
                     </option>
                   ))}
                 </select>
@@ -163,8 +192,8 @@ export function CreateForm<T extends { id?: string }>({
                   ref={index === 0 ? firstInputRef : undefined}
                   type={field.elementForm}
                   name={field.key as string}
-                  defaultValue={String(item?.[field.key] ?? "")}
-                  required
+                  defaultValue={item ? String(item?.[field.key]) : (field.elementForm === "number" ? 0 : "")}
+                  required = {Boolean(field.required)}
                   className="w-full border border-gray-300 rounded p-1"
                 />
               )}

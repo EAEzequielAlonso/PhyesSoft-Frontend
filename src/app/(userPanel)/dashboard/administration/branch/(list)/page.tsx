@@ -17,9 +17,9 @@ export default async function ListPage({ searchParams }: ListPageProps) {
 
   // datos Particulares de cada uno
   const columns:Columns<Branch>[] = [
-    {key:"name", label:"Nombre"},
-    {key:"address", label:"Dirección"},
-    {key:"fiscalData", label:"Razon Social"}
+    {key:"name", label:"Nombre", type: "text"},
+    {key:"address", label:"Dirección", type: "text"},
+    {key:"fiscalData", label:"Razon Social", type: "object"}
   ]
   const endpoint = "branch";
   const section = "administration"

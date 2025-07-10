@@ -1,7 +1,7 @@
 export const fetchGetClient = async (endpoint:string, queryParams = '', label: string) => {
     try {
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${endpoint}?${queryParams}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${endpoint}${queryParams && `?${queryParams}`}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -9,7 +9,6 @@ export const fetchGetClient = async (endpoint:string, queryParams = '', label: s
         credentials: 'include'
       });
       const resp = await response.json();
-      console.log("respuesta IVA: " , resp)
       if (!response.ok)
         throw new Error();
 

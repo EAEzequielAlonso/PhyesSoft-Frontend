@@ -29,15 +29,16 @@ const NewBrand: React.FC<Props> = async ({searchParams}) => {
     ])
     const formCrud: FormCrud<Product>[] = [
         {label: "Codigo", elementForm: "text", key: "code"},
-        {label: "Nombre", elementForm: "text", key: "name"},
+        {label: "Nombre", elementForm: "text", key: "name", required:true},
         {label: "Descripción", elementForm: "text", key: "description"},
+        {label: "Codigo de Barras", elementForm: "text", key: "codbar"},
         {label: "Imagen", elementForm: "text", key: "image"},
 
-        {label: "Cant x Venta", elementForm: "number", key: "buyUnit"},
-        {label: "Cant x Compra", elementForm: "number", key: "saleUnit"},
-        {label: "Costo", elementForm: "number", key: "cost"},
-        {label: "Utilidad", elementForm: "number", key: "profit"},
-        {label: "Precio", elementForm: "number", key: "price"},
+        {label: "Cant x Venta", elementForm: "number", key: "buyUnit", defaultValue: 1},
+        {label: "Cant x Compra", elementForm: "number", key: "saleUnit", defaultValue: 1},
+        {label: "Costo", elementForm: "number", key: "cost", defaultValue: 0},
+        {label: "Utilidad", elementForm: "number", key: "profit", defaultValue: 0},
+        {label: "Precio", elementForm: "number", key: "price", required:true, defaultValue: 0},
 
         {label: "¿Activo?", elementForm: "checkbox", key: "isActive", defaultValue: true },
         {label: "¿Se discrimina por color?", elementForm: "checkbox", key: "hasColor", defaultValue: false },

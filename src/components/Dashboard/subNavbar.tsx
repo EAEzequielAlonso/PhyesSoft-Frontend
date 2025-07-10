@@ -8,7 +8,7 @@ interface Props  {
 export function SubNavbar({navItems, section}: Props) {
   
     return (
-      <nav className=" bg-blue-700 text-white px-4 py-2 flex justify-between items-center shadow-md text-[13px]">
+      <nav className=" bg-blue-700 text-white px-4 py-2 flex justify-between items-center shadow-md text-xs">
         <div className="text-base font-semibold ">Administración de {section}.</div>
         <ul className="flex gap-4">
           {navItems.map((item) => (

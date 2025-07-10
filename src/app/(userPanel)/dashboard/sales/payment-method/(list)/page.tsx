@@ -16,7 +16,9 @@ export default async function ListPage({ searchParams }: ListPageProps) {
   const {search = "", page = "1"} = await searchParams;
 
   // datos Particulares de cada uno
-  const columns:Columns<PaymentMethod>[] = [{key:"name", label:"Nombre"}, {key:"adjustment", label:"Ajuste"}]
+  const columns:Columns<PaymentMethod>[] = [
+    {key:"name", label:"Nombre", type: "text"}, 
+    {key:"adjustment", label:"Ajuste", type: "porcent"}]
   const endpoint = "payment-method";
   const section = "sales"
   const label = "Metodo de Pago"

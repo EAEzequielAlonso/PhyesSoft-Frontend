@@ -67,18 +67,32 @@ export interface Color {
     name: string;
   }
 
+  export interface ProductCodbar {
+    id: string;
+    codbar:string;
+    product:Product;
+    productId:string;
+    color?:Product;
+    colorId?:string;
+    size?:Product;
+    sizeId?:string;
+    valueVariant?:Product;
+    valueVariantId?:string;
+  }
+
   export interface Product {
     id: string;
+    code?: string;
     name: string;
     description?: string;
-    code?: string;
+    codbar?: string;
     image?: string;
 
-    buyUnit: number;
-    saleUnit: number;
-    cost: number;
-    profit: number;
-    price: number;
+    buyUnit?: number;
+    saleUnit?: number;
+    cost?: number;
+    profit?: number;
+    price?: number;
 
     isActive: boolean;
     hasColor: boolean;

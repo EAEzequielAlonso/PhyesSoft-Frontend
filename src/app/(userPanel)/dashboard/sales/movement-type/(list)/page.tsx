@@ -16,7 +16,7 @@ export default async function ListPage({ searchParams }: ListPageProps) {
   const {search = "", page = "1"} = await searchParams;
 
   // datos Particulares de cada uno
-  const columns:Columns<MovementType>[] = [{key:"name", label:"Nombre"}]
+  const columns:Columns<MovementType>[] = [{key:"name", label:"Nombre", type: "text"}]
   const endpoint = "movement-type";
   const section = "sales"
   const label = "Tipo de movimiento"

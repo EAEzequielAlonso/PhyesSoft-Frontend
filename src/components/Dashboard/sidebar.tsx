@@ -4,18 +4,19 @@ import React, { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { 
   FaShop, 
-  //FaRegIdBadge 
+  FaRegIdBadge 
 } from "react-icons/fa6";
 import {
-  LuShoppingCart,    // Ventas
+  LuShoppingCart,             // Ventas
   LuShoppingBasket,           // Productos
-  LuGauge,           // Dashboard
+  LuGauge,                    // Dashboard
   LuUser,            // Mi Cuenta
   LuSettings ,       // Ajustes
- // LuBrainCircuit,    // Inteligencia Artigficial
+  LuPackageCheck,    // Pedidos
+  LuBrainCircuit,    // Inteligencia Artigficial
   LuChartNoAxesCombined, // Balances
   LuLogOut,           // Logout
-  //LuUsers,        // Cliente
+  LuUsers,        // Cliente
 
 
 } from "react-icons/lu";
@@ -105,12 +106,28 @@ export const Sidebar: React.FC = () => {
         />
 
         {/* <MenuItem
-          href={"/dashboard/clients"}
+          href={"/dashboard/client-order"}
+          icon={<LuPackageCheck size={20} />}
+          text={"Pedidos"}
+          isOpen={isOpen}
+          active={pathname!.endsWith("/dashboard/client-order")}
+        /> */}
+
+        <MenuItem
+          href={"/dashboard/client"}
           icon={<LuUsers size={20} />}
           text={"Clientes"}
           isOpen={isOpen}
-          active={pathname!.endsWith("/dashboard/clients")}
-        /> */}
+          active={pathname!.endsWith("/dashboard/client")}
+        />
+
+        <MenuItem
+          href={"/dashboard/providers"}
+          icon={<LuPackageCheck size={20} />}
+          text={"Proveedores"}
+          isOpen={isOpen}
+          active={pathname!.endsWith("/dashboard/providers")}
+        />
 
         <MenuItem
           href={"/dashboard/products"}
@@ -128,13 +145,13 @@ export const Sidebar: React.FC = () => {
           active={pathname!.endsWith("/dashboard/administration")}
         />
 
-        {/* <MenuItem
+        <MenuItem
           href={"/dashboard/employee"}
           icon={<FaRegIdBadge size={20} />}
           text={"Empleados"}
           isOpen={isOpen}
           active={pathname!.endsWith("/dashboard/employee")}
-        /> */}
+        /> 
 
         <MenuItem
           href={"/dashboard/reports"}
@@ -152,13 +169,13 @@ export const Sidebar: React.FC = () => {
           active={pathname!.endsWith("/dashboard/settings")}
         />
 
-        {/* <MenuItem
+        <MenuItem
           href={"/dashboard/ia"}
           icon={<LuBrainCircuit size={20} />}
           text={"I. Artifical"}
           isOpen={isOpen}
           active={pathname!.endsWith("/dashboard/ia")}
-        /> */}
+        /> 
 
         <MenuItem
           href={"/dashboard/mycount"}
